@@ -1,0 +1,168 @@
+:root {
+  /* Attio-inspired Color Palette - Expanded for Premium feel */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-bg: #ffffff; 
+  --color-bg-alt: #f8fafc;
+  --color-sidebar-bg: #ffffff;
+  --color-card-bg: #ffffff;
+  --color-text-main: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-border-soft: #f1f5f9;
+  --color-error: #ef4444;
+  --color-success: #22c55e;
+  
+  /* Spacing & Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --sidebar-width: 260px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-alt);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.015em;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Layout Classes */
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--color-sidebar-bg);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 48px;
+  min-width: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Bento Card Style */
+.card {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Typography Hierarchy */
+.page-header {
+  margin-bottom: 48px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin: 0 0 12px 0;
+  letter-spacing: -0.04em;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* Form Styles */
+.el-input__wrapper {
+  background-color: var(--color-bg-alt) !important;
+  box-shadow: 0 0 0 1px var(--color-border) inset !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 14px !important;
+}
+
+.el-input__wrapper.is-focus {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 1px var(--color-primary) inset, 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+.el-button {
+  font-weight: 600 !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 12px 24px !important;
+  height: auto !important;
+  transition: all 0.2s !important;
+}
+
+.el-button--primary {
+  background-color: var(--color-text-main) !important;
+  border-color: var(--color-text-main) !important;
+}
+
+.el-button--primary:hover {
+  background-color: #1e293b !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge Styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-primary { background: rgba(59, 130, 246, 0.1); color: var(--color-primary); }
+.badge-success { background: rgba(34, 197, 94, 0.1); color: var(--color-success); }
+
+/* Animations */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
