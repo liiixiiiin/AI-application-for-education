@@ -67,6 +67,22 @@
               <LayoutGrid :size="18" />
               <span>{{ session.user?.role === 'student' ? '我的学习' : '实训课程' }}</span>
             </RouterLink>
+            <RouterLink
+              to="/qa"
+              class="nav-item"
+              :class="{ active: currentPath === '/qa' }"
+            >
+              <MessageSquare :size="18" />
+              <span>RAG 问答</span>
+            </RouterLink>
+            <RouterLink
+              to="/exercises/grade"
+              class="nav-item"
+              :class="{ active: currentPath === '/exercises/grade' }"
+            >
+              <CheckSquare :size="18" />
+              <span>练习评测</span>
+            </RouterLink>
           </nav>
         </div>
 
@@ -76,6 +92,14 @@
             <RouterLink to="/courses/new" class="nav-item" :class="{ active: currentPath === '/courses/new' }">
               <PlusCircle :size="18" />
               <span>新建实训</span>
+            </RouterLink>
+            <RouterLink to="/knowledge-base" class="nav-item" :class="{ active: currentPath === '/knowledge-base' }">
+              <UploadCloud :size="18" />
+              <span>知识库上传</span>
+            </RouterLink>
+            <RouterLink to="/exercises" class="nav-item" :class="{ active: currentPath === '/exercises' }">
+              <ClipboardList :size="18" />
+              <span>练习生成</span>
             </RouterLink>
           </nav>
         </div>
@@ -164,7 +188,11 @@ import {
   ChevronsUpDown,
   Check,
   MoreHorizontal,
-  Plus
+  Plus,
+  UploadCloud,
+  MessageSquare,
+  ClipboardList,
+  CheckSquare
 } from "lucide-vue-next";
 import { ElMessage } from "element-plus";
 

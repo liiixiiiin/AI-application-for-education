@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .db import init_db
-from .routers import auth, courses
+from .routers import auth, courses, exercises, knowledge_base, rag_qa
 
 
 def create_app() -> FastAPI:
@@ -17,6 +17,9 @@ def create_app() -> FastAPI:
 
     app.include_router(auth.router)
     app.include_router(courses.router)
+    app.include_router(knowledge_base.router)
+    app.include_router(rag_qa.router)
+    app.include_router(exercises.router)
 
     @app.on_event("startup")
     def _startup() -> None:

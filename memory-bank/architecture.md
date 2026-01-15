@@ -29,6 +29,12 @@
   - `backend/app/auth.py`：密码哈希、会话 token、角色校验
   - `backend/app/routers/auth.py`：注册/登录 API
   - `backend/app/routers/courses.py`：课程创建与查询 API
+  - `backend/app/routers/knowledge_base.py`：知识库文档上传与检索占位 API
+  - `backend/app/routers/rag_qa.py`：RAG 问答占位 API
+  - `backend/app/routers/exercises.py`：练习生成与评测占位 API
+  - `backend/app/services/knowledge_base.py`：知识库文档存储与检索占位逻辑
+  - `backend/app/services/rag_qa.py`：RAG 问答占位逻辑
+  - `backend/app/services/exercises.py`：练习生成与评测占位逻辑
 
 ### 前端（Vue + Vite）
 - 入口：`frontend/index.html` / `frontend/src/main.js`
@@ -37,6 +43,10 @@
   - `frontend/src/pages/Login.vue`：注册与登录
   - `frontend/src/pages/Courses.vue`：课程列表与角色展示
   - `frontend/src/pages/CreateCourse.vue`：教师课程创建
+  - `frontend/src/pages/KnowledgeBaseUpload.vue`：知识库上传占位表单
+  - `frontend/src/pages/RagQa.vue`：RAG 问答占位页面
+  - `frontend/src/pages/ExerciseGeneration.vue`：练习生成表单与结果占位页面
+  - `frontend/src/pages/ExerciseGrading.vue`：练习评测提交与结果占位页面
 - API：`frontend/src/services/api.js`
 - 会话：`frontend/src/stores/session.js`
 - 样式：`frontend/src/assets/base.css`

@@ -22,5 +22,5 @@ export const apiRequest = async (path, options = {}) => {
   if (!response.ok) {
     throw new Error(payload.detail || "Request failed");
   }
-  return payload.data;
+  return payload.data ?? payload;
 };
