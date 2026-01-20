@@ -1,0 +1,282 @@
+{
+  "batch_id": "batch_eafecbf8f660cc1d",
+  "course_id": "course_9ff5901482019ab3",
+  "title": "练习批次 2026/1/19 19:03:22",
+  "created_at": "2026-01-19T11:03:23.564029+00:00",
+  "exercises": [
+    {
+      "exercise_id": "ex_83159464232ad3f1",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "关于前馈神经网络的特点，以下描述正确的是哪一项？",
+      "knowledge_points": [
+        "前馈神经网络"
+      ],
+      "source_chunks": [
+        "chunk_ba2664b333d1dce3"
+      ],
+      "difficulty": "easy",
+      "options": [
+        {
+          "key": "A",
+          "text": "信息可以在网络中循环流动，形成反馈"
+        },
+        {
+          "key": "B",
+          "text": "神经元之间存在闭环连接，信号可回溯"
+        },
+        {
+          "key": "C",
+          "text": "信息从输入层单向传播至输出层，无闭环连接"
+        },
+        {
+          "key": "D",
+          "text": "前馈神经网络不能用于分类任务"
+        }
+      ],
+      "answer": "C",
+      "analysis": "前馈神经网络的信息流动是单向的，从输入层经过隐藏层到达输出层，神经元之间没有闭环连接，信号不会回溯。因此选项C正确。A、B描述的是循环神经网络的特点，错误；D错误，因为前馈神经网络广泛应用于分类、回归等任务。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_f1aecdbab8df3dd1",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "Swish激活函数的计算公式为Swish(x) = x * σ(βx)，其中σ是Sigmoid函数，β可以是固定值或可学习参数。",
+      "knowledge_points": [
+        "激活函数"
+      ],
+      "source_chunks": [
+        "chunk_76008c8ed03f39c8"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": true,
+      "analysis": "根据资料，Swish激活函数的定义确实是Swish(x) = x * σ(βx)，其中σ表示Sigmoid函数，β可以设为1或作为可学习参数，因此该说法正确。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_874bf94a7e872cd6",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "ReLU激活函数的作用是什么？请简要说明其在神经网络中的优点。",
+      "knowledge_points": [
+        "ReLU"
+      ],
+      "source_chunks": [
+        "chunk_f0e8b7d776ffb357"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": "ReLU（Rectified Linear Unit）激活函数的作用是引入非线性，使神经网络能够学习复杂的模式。其优点包括：1）能有效缓解梯度消失问题，因为当输入大于0时梯度为1；2）计算简单，仅需取最大值操作，加快训练速度。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "说明ReLU引入非线性作用",
+          "score": 1.0
+        },
+        {
+          "point": "提到缓解梯度消失问题",
+          "score": 1.0
+        },
+        {
+          "point": "指出计算简单、加速训练",
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_540c48b2b27c2d80",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "下列关于 GeLU 激活函数的描述，哪一项是正确的？",
+      "knowledge_points": [
+        "GeLU"
+      ],
+      "source_chunks": [
+        "chunk_5c289f90d267452c"
+      ],
+      "difficulty": "easy",
+      "options": [
+        {
+          "key": "A",
+          "text": "GeLU(x) = x * σ(x)，其中 σ(x) 是 sigmoid 函数"
+        },
+        {
+          "key": "B",
+          "text": "GeLU(x) = x * Φ(x)，其中 Φ(x) 是标准正态分布的累积分布函数"
+        },
+        {
+          "key": "C",
+          "text": "GeLU(x) = max(0, x)，即与 ReLU 函数相同"
+        },
+        {
+          "key": "D",
+          "text": "GeLU(x) ≈ 0.5x * (1 + tanh(√(2/π) * (x + 0.044715 * x²)))"
+        }
+      ],
+      "answer": "B",
+      "analysis": "GeLU（Gaussian Error Linear Unit）的计算公式为 GeLU(x) = x * Φ(x)，其中 Φ(x) 是标准正态分布的累积分布函数。选项 D 中的公式虽然形式接近近似公式，但错误地将 x³ 写成了 x²；正确应为 x³。因此正确答案是 B。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_ba6c849e1643d58a",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "Swish激活函数的计算公式为Swish(x) = x * σ(βx)，其中σ是Sigmoid函数，β可以是固定值或可学习参数。",
+      "knowledge_points": [
+        "Swish"
+      ],
+      "source_chunks": [
+        "chunk_76008c8ed03f39c8"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": true,
+      "analysis": "根据资料，Swish激活函数的定义确实是Swish(x) = x * σ(βx)，其中σ表示Sigmoid函数，β可以固定为1或作为可学习参数，因此该说法正确。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_bd2cac3266178581",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "请简要说明LoRA适配器的工作原理及其在大模型微调中的主要优点。",
+      "knowledge_points": [
+        "LoRA适配器"
+      ],
+      "source_chunks": [
+        "chunk_666820ddb84ba782"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": "LoRA（Low-Rank Adaptation）通过在预训练模型的权重矩阵（如注意力矩阵）上引入低秩分解，将原始权重的更新分解为两个低秩矩阵的乘积，仅训练这两个低秩矩阵作为可学习参数，从而大幅减少微调时需要更新的参数量。其主要优点包括：参数高效，显著减少可训练参数数量；计算效率高，降低训练和推理资源消耗；保持预训练模型稳定性，减少过拟合风险；同时在多数任务上能接近全量微调的性能。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "正确描述LoRA的工作原理，提及低秩分解和低秩矩阵更新",
+          "score": 1.0
+        },
+        {
+          "point": "准确列出至少两个LoRA的主要优点",
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_ba00bcd28d9d564c",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "关于P-tuning的说法，以下哪项是正确的？",
+      "knowledge_points": [
+        "P-tuning"
+      ],
+      "source_chunks": [
+        "chunk_3a0785cf2066c4c3"
+      ],
+      "difficulty": "easy",
+      "options": [
+        {
+          "key": "A",
+          "text": "P-tuning通过在模型输出端添加可学习的提示来微调模型"
+        },
+        {
+          "key": "B",
+          "text": "P-tuning在输入序列的开头添加多个可学习的连续前缀，且前缀较长"
+        },
+        {
+          "key": "C",
+          "text": "P-tuning通过在输入序列开头添加一个较短的可学习连续前缀来引导模型输出"
+        },
+        {
+          "key": "D",
+          "text": "P-tuning直接更新预训练模型的所有参数以适应下游任务"
+        }
+      ],
+      "answer": "C",
+      "analysis": "P-tuning是一种参数高效的微调方法，它在输入序列的开头添加一个较短的可学习连续前缀，用于引导模型生成适应特定任务的输出。该方法不更新预训练模型的原始参数，仅优化前缀部分。选项A混淆了输入与输出位置；选项B描述的是P-tuning v2的特点；选项D描述的是全量微调，而非P-tuning。因此正确答案是C。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_fa6980cea3803c71",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "P-tuning v2通过在输入序列的每个Transformer层中添加可学习的连续前缀来引导模型生成适应特定任务的输出。",
+      "knowledge_points": [
+        "P-tuning v2"
+      ],
+      "source_chunks": [
+        "chunk_3a0785cf2066c4c3"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": false,
+      "analysis": "P-tuning v2并非在每个Transformer层中添加连续前缀，而是在输入序列的开头添加多个可学习的连续前缀，并将这些前缀传递到所有Transformer层中进行处理。与P-tuning相比，P-tuning v2的主要改进是使用更长且多层次的前缀表示，但其前缀仍位于输入端，并非在每一层独立添加。",
+      "rubric": null
+    },
+    {
+      "exercise_id": "ex_11094ef54717d6e9",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "Flash Attention 的主要作用是什么？请简要说明其通过哪些技术手段实现性能优化。",
+      "knowledge_points": [
+        "Flash Attention"
+      ],
+      "source_chunks": [
+        "chunk_27d92d21180bcfde"
+      ],
+      "difficulty": "easy",
+      "options": null,
+      "answer": "Flash Attention 的主要作用是加速自注意力机制的计算，并减少内存占用，从而提高大规模模型在训练和推理时的效率。它通过分块 Softmax、重计算（recomputation）和 Kernel 融合等技术，将计算更多地放在高速缓存（SRAM）中进行，减少对高带宽内存（HBM）的访问，从而节省显存并提升计算速度。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "正确描述 Flash Attention 的主要作用（加速计算、减少内存占用）",
+          "score": 1.0
+        },
+        {
+          "point": "提到至少两项关键技术（如分块 Softmax、重计算、Kernel 融合）",
+          "score": 1.0
+        },
+        {
+          "point": "解释优化原理（如利用 SRAM、减少 HBM 访问）",
+          "score": 1.0
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_1b0b1a45d8a6c5f9",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "Paged Attention 的主要作用是什么？",
+      "knowledge_points": [
+        "Paged Attention"
+      ],
+      "source_chunks": [
+        "chunk_27d92d21180bcfde"
+      ],
+      "difficulty": "easy",
+      "options": [
+        {
+          "key": "A",
+          "text": "提高模型训练的并行度"
+        },
+        {
+          "key": "B",
+          "text": "减少注意力机制中的计算量"
+        },
+        {
+          "key": "C",
+          "text": "通过分页管理内存，支持处理更长的序列"
+        },
+        {
+          "key": "D",
+          "text": "加速矩阵乘法运算"
+        }
+      ],
+      "answer": "C",
+      "analysis": "Paged Attention 将长序列分割为多个页面，仅将当前需要计算的页面加载到内存中，从而突破GPU内存限制，支持处理超长序列。该技术主要解决内存瓶颈，而非直接减少计算量或加速运算。",
+      "rubric": null
+    }
+  ],
+  "updated_at": null
+}

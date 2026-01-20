@@ -39,6 +39,22 @@ class CourseResponse(BaseModel):
     created_at: str
 
 
+class KnowledgePointResponse(BaseModel):
+    id: str
+    course_id: str
+    point: str
+    created_at: str
+
+
+class KnowledgePointCreateRequest(BaseModel):
+    point: str = Field(min_length=1)
+
+
+class KnowledgePointsSyncRequest(BaseModel):
+    points: list[str]
+    mode: str = Field(default="append")  # "append" or "replace"
+
+
 class DocumentUploadItem(BaseModel):
     name: str = Field(min_length=1)
     doc_type: str = Field(min_length=1)
@@ -46,6 +62,13 @@ class DocumentUploadItem(BaseModel):
 
 class DocumentUploadRequest(BaseModel):
     documents: list[DocumentUploadItem]
+    use_llm_chunking: bool | None = None
+
+
+class DocumentWebUploadRequest(BaseModel):
+    urls: list[str] = Field(min_length=1)
+    parse_classes: list[str] | None = None
+    use_llm_chunking: bool | None = None
 
 
 class DocumentMetadata(BaseModel):
@@ -65,10 +88,28 @@ class DocumentSearchRequest(BaseModel):
 class DocumentSearchResult(BaseModel):
     chunk_id: str
     score: float
+    rerank_score: float | None = None
+    bm25_score: float | None = None
+    hybrid_score: float | None = None
     content: str
     title_path: str
     source_doc_id: str
     source_doc_name: str | None = None
+
+
+class DocumentChunk(BaseModel):
+    chunk_id: str
+    content: str
+    title_path: str
+    order_index: int | None = None
+    char_count: int | None = None
+
+
+class DocumentUpdateRequest(BaseModel):
+    name: str | None = None
+    doc_type: str | None = None
+    content: str | None = None
+    use_llm_chunking: bool | None = None
 
 
 class RagQaRequest(BaseModel):
@@ -83,11 +124,32 @@ class RagCitation(BaseModel):
     source_doc_name: str
     title_path: str
     excerpt: str
+    score: float | None = None
+    rerank_score: float | None = None
+    bm25_score: float | None = None
+    hybrid_score: float | None = None
 
 
 class RagQaResponse(BaseModel):
     answer: str
     citations: list[RagCitation]
+
+
+class RagEvaluationRequest(BaseModel):
+    course_id: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    answer: str | None = None
+    ground_truth: str | None = None
+    top_k: int = Field(default=5, ge=1, le=20)
+    metrics: list[str] | None = None
+
+
+class RagEvaluationResponse(BaseModel):
+    answer: str
+    contexts: list[str]
+    citations: list[RagCitation]
+    scores: dict[str, float]
+    metrics: list[str]
 
 
 class ExerciseGenerationRequest(BaseModel):
@@ -124,6 +186,32 @@ class ExerciseItem(BaseModel):
 
 class ExerciseGenerationResponse(BaseModel):
     generated: list[ExerciseItem]
+
+
+class ExerciseBatchSaveRequest(BaseModel):
+    title: str | None = None
+    exercises: list[ExerciseItem]
+
+
+class ExerciseBatchResponse(BaseModel):
+    batch_id: str
+    course_id: str
+    title: str
+    created_at: str
+    exercises: list[ExerciseItem]
+    updated_at: str | None = None
+
+
+class ExerciseBatchListItem(BaseModel):
+    batch_id: str
+    title: str
+    created_at: str
+    count: int
+
+
+class ExerciseBatchUpdateRequest(BaseModel):
+    title: str | None = None
+    exercises: list[ExerciseItem] | None = None
 
 
 class ExerciseGradingRequest(BaseModel):

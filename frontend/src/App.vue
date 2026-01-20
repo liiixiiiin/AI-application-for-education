@@ -97,6 +97,10 @@
               <UploadCloud :size="18" />
               <span>知识库上传</span>
             </RouterLink>
+            <RouterLink to="/knowledge-base/search" class="nav-item" :class="{ active: currentPath === '/knowledge-base/search' }">
+              <Search :size="18" />
+              <span>知识库检索</span>
+            </RouterLink>
             <RouterLink to="/exercises" class="nav-item" :class="{ active: currentPath === '/exercises' }">
               <ClipboardList :size="18" />
               <span>练习生成</span>
@@ -188,8 +192,9 @@ import {
   ChevronsUpDown,
   Check,
   MoreHorizontal,
-  Plus,
+  Plus, 
   UploadCloud,
+  Search,
   MessageSquare,
   ClipboardList,
   CheckSquare

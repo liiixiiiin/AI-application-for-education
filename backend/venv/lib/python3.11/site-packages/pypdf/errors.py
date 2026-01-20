@@ -11,13 +11,13 @@ class DeprecationError(Exception):
 
 class DependencyError(Exception):
     """
-    Raised when a required dependency (a library or module that pypdf depends on)
+    Raised when a required dependency (a library or module that PyPDF depends on)
     is not available or cannot be imported.
     """
 
 
 class PyPdfError(Exception):
-    """Base class for all exceptions raised by pypdf."""
+    """Base class for all exceptions raised by PyPDF."""
 
 
 class PdfReadError(PyPdfError):
@@ -59,16 +59,4 @@ class EmptyFileError(PdfReadError):
     """Raised when a PDF file is empty or has no content."""
 
 
-class EmptyImageDataError(PyPdfError):
-    """Raised when trying to process an image that has no data."""
-
-
 STREAM_TRUNCATED_PREMATURELY = "Stream has ended unexpectedly"
-
-
-class LimitReachedError(PyPdfError):
-    """Raised when a limit is reached."""
-
-
-class XmpDocumentError(PyPdfError, RuntimeError):
-    """Raised when the XMP XML document context is invalid or missing."""

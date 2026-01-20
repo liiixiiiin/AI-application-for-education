@@ -1,0 +1,79 @@
+[
+  {
+    "chunk_id": "chunk_a249fdef46ced33c",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > LayerNorm 篇 > 1.1 > 片段 1",
+    "content": "Layernormalization 方法篇来自: AiGC面试宝典 宁静致远 2023年 09 月 29 日 12:37。LayerNorm 的计算公式为:对每个样本的特征维度进行归一化,计算均值和方差后,进行标准化并应用可学习的缩放和平移参数。公式为:\\( \\hat{x}_i = \\frac{x_i - \\mu}{\\sqrt{\\sigma^2 + \\epsilon}} \\),其中 \\( \\mu \\) 和 \\( \\sigma^2 \\) 是当前层输入的均值和方差。",
+    "order_index": 1,
+    "char_count": 234
+  },
+  {
+    "chunk_id": "chunk_4492dd2b6805e238",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > RMSNorm 篇 > 2.1 > 片段 2",
+    "content": "RMSNorm 的计算公式为:\\( \\hat{x}_i = \\frac{x_i}{\\sqrt{\\text{RMS}(x)^2 + \\epsilon}} \\),其中 \\( \\text{RMS}(x) = \\sqrt{\\frac{1}{n} \\sum_{i=1}^{n} x_i^2} \\)。该方法仅依赖于输入的均方根,省略了均值中心化步骤,简化了 LayerNorm 的计算流程,提升了计算效率,同时保持相近甚至更优的模型表现。",
+    "order_index": 2,
+    "char_count": 213
+  },
+  {
+    "chunk_id": "chunk_94b92d6d344853f4",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > RMSNorm 篇 > 2.2 > 片段 3",
+    "content": "RMSNorm 相比于 LayerNorm 的主要特点是去除了对均值的计算和平移操作,仅保留基于均方根的归一化。这使得 RMSNorm 计算速度更快,内存占用更低。在实际应用中,其效果与 LayerNorm 基本相当,甚至在某些任务上略有提升,尤其适用于大规模语言模型以提高训练效率。",
+    "order_index": 3,
+    "char_count": 142
+  },
+  {
+    "chunk_id": "chunk_278804d593af19c0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > DeepNorm 篇 > 3.1 > 片段 4",
+    "content": "DeepNorm 的核心思路是在执行 LayerNorm 之前,对残差连接进行 up-scale(alpha > 1),以增强信息流动;同时在参数初始化阶段对模型权重进行 down-scale(beta < 1),以稳定梯度传播。这种方法有效缓解了深层网络中因残差连接累积导致的模型更新爆炸问题。",
+    "order_index": 4,
+    "char_count": 148
+  },
+  {
+    "chunk_id": "chunk_e79319e7d9ceb12b",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > DeepNorm 篇 > 3.2 > 片段 5",
+    "content": "DeepNorm 的代码实现通常包括在残差连接后乘以 alpha 系数,并在权重初始化时按 beta 缩放。优点是能够将深层 Transformer 中的模型更新幅度限制在常数范围内,显著提升训练稳定性,尤其适用于非常深的模型结构,避免梯度爆炸或训练震荡。",
+    "order_index": 5,
+    "char_count": 128
+  },
+  {
+    "chunk_id": "chunk_4edd8c22e37ada33",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > Layernormalization位置篇 > 1 > 片段 6",
+    "content": "在大型语言模型(LLMs)中,LayerNorm 的位置主要有 PostLN、PreLN 和 Sandwich-LN 三种。PostLN 将 layernorm 放在残差连接之后,但深层梯度范式增大,易导致训练不稳定。PreLN 将其放在残差连接之前,梯度范式更稳定,训练更平稳,但模型性能略低。",
+    "order_index": 6,
+    "char_count": 148
+  },
+  {
+    "chunk_id": "chunk_7c1cbf4bf14d5173",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_92e89b61630701c7",
+    "source_doc_name": "2-Layer normalization 篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "2-Layer normalization 篇.pdf > Layernormalization位置篇 > 1 > 片段 7",
+    "content": "Sandwich-LN 在 PreLN 基础上额外增加一个 layernorm 层,旨在防止激活值爆炸,如 CogView 模型所采用。然而,这种结构可能引入训练不稳定性,甚至导致训练崩溃,需谨慎使用。合理选择 LN 位置对模型收敛和性能至关重要。\n\n不同 LLMs 使用的 LayerNorm 类型有所不同。例如,BLOOM 模型在 embedding 层后添加 layernormalization,有助于提升训练稳定性。然而,这一设计可能带来较大的性能损失,需权衡稳定性与推理效率之间的关系,在架构设计中做出取舍。",
+    "order_index": 7,
+    "char_count": 260
+  }
+]

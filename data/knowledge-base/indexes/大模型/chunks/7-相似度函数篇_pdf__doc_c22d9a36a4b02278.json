@@ -1,0 +1,46 @@
+[
+  {
+    "chunk_id": "chunk_43d3b487cd20b13a",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c22d9a36a4b02278",
+    "source_doc_name": "7-相似度函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "7-相似度函数篇.pdf > 一、除了 cosin 还有哪些算相似度的方法 > 片段 1",
+    "content": "除了余弦相似度(cosine similarity)之外,常见的相似度计算方法还包括欧氏距离、曼哈顿距离、Jaccard相似度、皮尔逊相关系数等。这些方法适用于不同类型的数据和场景,例如欧氏距离适合连续型数据,Jaccard相似度常用于集合之间的相似性计算。",
+    "order_index": 1,
+    "char_count": 129
+  },
+  {
+    "chunk_id": "chunk_f633473e82b471ff",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c22d9a36a4b02278",
+    "source_doc_name": "7-相似度函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "7-相似度函数篇.pdf > 二、了解对比学习嘛? > 片段 2",
+    "content": "对比学习是一种无监督学习方法,通过训练模型使得相同样本的表示更接近,不同样本的表示更远离,从而学习到更好的表示。对比学习通常使用对比损失函数,例如 Siamese 网络、Triplet 网络等,用于学习数据之间的相似性和差异性。",
+    "order_index": 2,
+    "char_count": 114
+  },
+  {
+    "chunk_id": "chunk_560e7df4049e4bc7",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c22d9a36a4b02278",
+    "source_doc_name": "7-相似度函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "7-相似度函数篇.pdf > 三、对比学习负样本是否重要?负样本构造成本过高应该怎么解决? > 片段 3",
+    "content": "对比学习中负样本的重要性取决于具体的任务和数据。负样本可以帮助模型学习到样本之间的区分度,从而提高模型的性能和泛化能力。然而,负样本的构造成本可能会较高,特别是在一些领域和任务中。",
+    "order_index": 3,
+    "char_count": 90
+  },
+  {
+    "chunk_id": "chunk_06874b70d18e448f",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c22d9a36a4b02278",
+    "source_doc_name": "7-相似度函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "7-相似度函数篇.pdf > 三、对比学习负样本是否重要?负样本构造成本过高应该怎么解决? > 片段 4",
+    "content": "为了解决负样本构造成本过高的问题,可以考虑以下方法: 降低负样本的构造成本:通过设计更高效的负样本生成算法或采样策略,减少构造成本。例如利用数据增强技术生成合成负样本,或使用近似采样方法选择与正样本相似但不相同的样本。\n\n确定关键负样本:根据具体任务的特点,可以重点关注一些关键的负样本,而不是对所有负样本进行详细的构造。迁移学习和预训练模型:利用预训练模型或迁移学习的方法,在其他领域或任务中利用已有的负样本构造成果,减少重复工作。",
+    "order_index": 4,
+    "char_count": 217
+  }
+]

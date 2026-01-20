@@ -3,6 +3,7 @@ import LoginPage from "../pages/Login.vue";
 import CoursesPage from "../pages/Courses.vue";
 import CreateCoursePage from "../pages/CreateCourse.vue";
 import KnowledgeBaseUploadPage from "../pages/KnowledgeBaseUpload.vue";
+import KnowledgeBaseSearchPage from "../pages/KnowledgeBaseSearch.vue";
 import AdminDashboard from "../pages/AdminDashboard.vue";
 import RagQaPage from "../pages/RagQa.vue";
 import ExerciseGenerationPage from "../pages/ExerciseGeneration.vue";
@@ -17,6 +18,7 @@ const router = createRouter({
     { path: "/courses", component: CoursesPage },
     { path: "/courses/new", component: CreateCoursePage },
     { path: "/knowledge-base", component: KnowledgeBaseUploadPage },
+    { path: "/knowledge-base/search", component: KnowledgeBaseSearchPage },
     { path: "/admin", component: AdminDashboard },
     { path: "/qa", component: RagQaPage },
     { path: "/exercises", component: ExerciseGenerationPage },
@@ -33,7 +35,7 @@ router.beforeEach((to) => {
     return "/courses";
   }
   if (
-    to.path === "/knowledge-base" &&
+    (to.path === "/knowledge-base" || to.path === "/knowledge-base/search") &&
     session.user?.role !== "teacher" &&
     session.user?.role !== "admin"
   ) {

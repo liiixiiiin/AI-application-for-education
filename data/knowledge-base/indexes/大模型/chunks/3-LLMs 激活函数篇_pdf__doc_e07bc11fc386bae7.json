@@ -1,0 +1,79 @@
+[
+  {
+    "chunk_id": "chunk_96d688b38d1f51ef",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 介绍一下 FFN 块 计算公式? > 片段 1",
+    "content": "介绍一下 FFN 块 计算公式? FFN(Feed-Forward Network)块是 Transformer 架构中的关键组件,通常由两个线性变换和一个激活函数组成。计算公式为:FFN(x) = W2 * activation(W1 * x + b1) + b2,其中 x 是输入向量,W1、W2 是可训练权重矩阵,b1、b2 是偏置项,activation 通常是 ReLU 或 GeLU。中间维度一般扩展为 4h,h 为模型隐藏层维度。",
+    "order_index": 1,
+    "char_count": 222
+  },
+  {
+    "chunk_id": "chunk_5c289f90d267452c",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 介绍一下 GeLU 计算公式? > 片段 2",
+    "content": "介绍一下 GeLU 计算公式? GeLU(Gaussian Error Linear Unit)是一种基于高斯误差函数的激活函数,其计算公式为:GeLU(x) = x * Φ(x),其中 Φ(x) 是标准正态分布的累积分布函数。近似实现常用公式:GeLU(x) ≈ 0.5x * (1 + tanh(√(2/π) * (x + 0.044715 * x3)))。该函数在 LLMs 中广泛应用,如 BERT 和 GPT 系列,能更好地建模神经元激活的随机性。",
+    "order_index": 2,
+    "char_count": 229
+  },
+  {
+    "chunk_id": "chunk_76008c8ed03f39c8",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 介绍一下 Swish 计算公式? > 片段 3",
+    "content": "介绍一下 Swish 计算公式? Swish 激活函数定义为:Swish(x) = x * σ(βx),其中 σ 是 Sigmoid 函数,β 是可学习参数或固定为 1。当 β=1 时,Swish 可简化为 x * sigmoid(x)。该函数具有平滑、非单调特性,在某些深度网络中表现优于 ReLU。Swish 与 GLU 结合使用时,能增强模型的表达能力,被用于部分先进语言模型中。",
+    "order_index": 3,
+    "char_count": 193
+  },
+  {
+    "chunk_id": "chunk_8b78bd65b39730d7",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 使用 GLU 线性门控单元的 FFN 块 计算公式? > 片段 4",
+    "content": "2个可训练权重矩阵,中间维度为 4h。介绍一下 使用 GLU 线性门控单元的 FFN 块 计算公式? GLU(Gated Linear Unit)结构引入门控机制,公式为:FFN(x) = (W1 * x + b1) ⊗ gate(W2 * x + b2),其中 gate 通常为 Sigmoid 或 GeLU。常见形式为:GLU(x) = (W1x + b1) ⊗ σ(W2x + b2)。门控机制有助于控制信息流动,提升模型性能。",
+    "order_index": 4,
+    "char_count": 217
+  },
+  {
+    "chunk_id": "chunk_43d8c3619e9abde0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 使用 GeLU 的 GLU 块 计算公式? > 片段 5",
+    "content": "5 介绍一下 使用 GeLU 的 GLU 块 计算公式? 使用 GeLU 的 GLU 块结合了 GeLU 激活与门控机制,其公式为:GLU_{GeLU}(x) = (W1x + b1) ⊗ GeLU(W2x + b2)。这种结构在 LLM 中能够增强非线性表达能力,同时保持梯度稳定。相比传统 FFN,它在某些任务上表现出更优的收敛性和准确性,被用于如 PaLM 等大型模型中。",
+    "order_index": 5,
+    "char_count": 189
+  },
+  {
+    "chunk_id": "chunk_da06791d0a2646bb",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 使用 Swish 的 GLU 块 计算公式? > 片段 6",
+    "content": "6 介绍一下 使用 Swish 的 GLU 块 计算公式? 使用 Swish 的 GLU 块公式为:GLU_{Swish}(x) = (W1x + b1) ⊗ Swish(W2x + b2) = (W1x + b1) ⊗ (W2x + b2) * σ(β(W2x + b2))。该结构融合了 Swish 的平滑非线性和门控机制,在 LLM 中提升了模型的表达能力。部分模型如 SwiGLU 已证明在相同参数下优于传统 FFN。",
+    "order_index": 6,
+    "char_count": 213
+  },
+  {
+    "chunk_id": "chunk_7d8157b2c2136fbc",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_e07bc11fc386bae7",
+    "source_doc_name": "3-LLMs 激活函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "3-LLMs 激活函数篇.pdf > 各LLMs 都使用哪种激活函数? > 片段 7",
+    "content": "3个可训练权重矩阵,中间维度为 4h*2/3。各LLMs 都使用哪种激活函数? 多数现代大语言模型倾向于使用 SwiGLU 或 GeGLU 结构。例如,LLaMA 系列采用 SwiGLU,其公式为:FFN(x) = W1x ⊗ Swish(W2x)。中间维度常设为 4h×2/3≈11008(当 h=4096 时),以平衡计算效率与模型容量。4h = 4*4096 = 16384,2/3 * 4h = 10022 → 实际取 11008,且 11008/128 = 86,便于硬件对齐。",
+    "order_index": 7,
+    "char_count": 244
+  }
+]

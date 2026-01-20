@@ -14,8 +14,9 @@
 - 代码、测试与资源尚未落地；实施时建议按 `frontend/`、`backend/`、`assets/` 拆分并保持模块化。
 
 ## 构建、测试与开发命令
-- 当前暂无可执行的构建或运行命令。
-- 添加代码后，在此列出关键入口命令（如 `npm run dev`、`uvicorn app.main:app`），并说明用途。
+- 前端开发：`npm run dev`（在 `frontend/` 目录）
+- 后端开发：`uvicorn app.main:app --reload`（在 `backend/` 目录）
+- 构建前端：`npm run build`（在 `frontend/` 目录）
 
 ## 编码风格与命名规范
 - 未配置格式化或 lint 工具前，遵循语言默认规范。

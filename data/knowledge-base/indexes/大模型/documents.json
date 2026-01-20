@@ -1,0 +1,51 @@
+[
+  {
+    "id": "doc_b937f848dc3bd315",
+    "name": "超详细的总结！大模型算法岗面试题(含答案)来了！.txt",
+    "doc_type": "txt",
+    "status": "indexed",
+    "created_at": "2026-01-19T07:56:07.205288+00:00"
+  },
+  {
+    "id": "doc_c22d9a36a4b02278",
+    "name": "7-相似度函数篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:05:20.721336+00:00"
+  },
+  {
+    "id": "doc_c2e8c17e99c4d44b",
+    "name": "5-transformers 操作篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:06:10.516822+00:00"
+  },
+  {
+    "id": "doc_816d05d1d5c1b738",
+    "name": "4-Attention 升级面.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:07:10.397963+00:00"
+  },
+  {
+    "id": "doc_466cae7b7b15638f",
+    "name": "1-大模型（LLMs）基础面.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:12:21.261048+00:00"
+  },
+  {
+    "id": "doc_92e89b61630701c7",
+    "name": "2-Layer normalization 篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:12:50.266521+00:00"
+  },
+  {
+    "id": "doc_e07bc11fc386bae7",
+    "name": "3-LLMs 激活函数篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-01-19T09:13:12.280529+00:00"
+  }
+]

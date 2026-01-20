@@ -20,7 +20,7 @@
 - `model-service/`：模型服务与 RAG 管线。
 - `data/`：本地数据与知识库样本存放目录。
 
-## 当前实现（Step 8）
+## 当前实现（Step 9）
 
 ### 后端（FastAPI）
 - 入口：`backend/app/main.py`
@@ -29,12 +29,15 @@
   - `backend/app/auth.py`：密码哈希、会话 token、角色校验
   - `backend/app/routers/auth.py`：注册/登录 API
   - `backend/app/routers/courses.py`：课程创建与查询 API
-  - `backend/app/routers/knowledge_base.py`：知识库文档上传与检索占位 API
-  - `backend/app/routers/rag_qa.py`：RAG 问答占位 API
-  - `backend/app/routers/exercises.py`：练习生成与评测占位 API
-  - `backend/app/services/knowledge_base.py`：知识库文档存储与检索占位逻辑
-  - `backend/app/services/rag_qa.py`：RAG 问答占位逻辑
-  - `backend/app/services/exercises.py`：练习生成与评测占位逻辑
+  - `backend/app/routers/knowledge_base.py`：知识库文档上传、管理（查看/修改/删除/检索）API
+- `backend/app/routers/rag_qa.py`：RAG 问答 API（含流式输出）
+  - `backend/app/routers/exercises.py`：练习生成与评测 API
+  - `backend/app/services/knowledge_base.py`：知识库文档存储、内容更新、网页解析、向量检索与可选大模型辅助切分
+  - `backend/app/services/langchain_client.py`：DashScope Embeddings/Chat 模型封装
+  - `backend/app/services/model_client.py`：外部模型 API 适配（可选）
+- `backend/app/services/rag_qa.py`：RAG 问答逻辑（LangChain + DashScope，含流式输出）
+  - `backend/app/services/rag_evaluation.py`：RAGAS 评测逻辑（指标计算与评估）
+  - `backend/app/services/exercises.py`：练习生成与评测逻辑（LangChain + DashScope）
 
 ### 前端（Vue + Vite）
 - 入口：`frontend/index.html` / `frontend/src/main.js`
@@ -43,8 +46,8 @@
   - `frontend/src/pages/Login.vue`：注册与登录
   - `frontend/src/pages/Courses.vue`：课程列表与角色展示
   - `frontend/src/pages/CreateCourse.vue`：教师课程创建
-  - `frontend/src/pages/KnowledgeBaseUpload.vue`：知识库上传占位表单
-  - `frontend/src/pages/RagQa.vue`：RAG 问答占位页面
+  - `frontend/src/pages/KnowledgeBaseUpload.vue`：知识库上传、管理（查看/修改/删除/检索）页面
+- `frontend/src/pages/RagQa.vue`：RAG 问答页面（支持流式输出）
   - `frontend/src/pages/ExerciseGeneration.vue`：练习生成表单与结果占位页面
   - `frontend/src/pages/ExerciseGrading.vue`：练习评测提交与结果占位页面
 - API：`frontend/src/services/api.js`

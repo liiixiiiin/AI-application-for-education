@@ -12,125 +12,126 @@
     <div class="grade-layout">
       <div class="grade-main card">
         <el-form label-position="top">
-          <el-form-item label="选择课程">
-            <el-select
-              v-model="selectedCourse"
-              placeholder="请选择课程"
-              filterable
-              :loading="loadingCourses"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="course in courses"
-                :key="course.id"
-                :label="course.title"
-                :value="course.id"
-              />
-            </el-select>
-          </el-form-item>
-
-          <div class="form-grid">
-            <el-form-item label="练习编号">
-              <el-input v-model="exerciseId" placeholder="例如 ex_001" />
-            </el-form-item>
-            <el-form-item label="题型">
-              <el-select v-model="exerciseType" placeholder="选择题型">
-                <el-option label="单选题" value="single_choice" />
-                <el-option label="判断题" value="true_false" />
-                <el-option label="简答题" value="short_answer" />
+          <div class="form-grid-3">
+            <el-form-item label="选择课程">
+              <el-select
+                v-model="selectedCourse"
+                placeholder="请选择课程"
+                filterable
+                :loading="loadingCourses"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="course in courses"
+                  :key="course.id"
+                  :label="course.title"
+                  :value="course.id"
+                />
               </el-select>
             </el-form-item>
+
+            <el-form-item label="选择练习批次">
+              <el-select
+                v-model="selectedBatchId"
+                placeholder="请选择批次"
+                filterable
+                :loading="loadingBatches"
+                :disabled="!selectedCourse"
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="batch in batches"
+                  :key="batch.batch_id"
+                  :label="batch.title"
+                  :value="batch.batch_id"
+                />
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="操作">
+              <el-button type="primary" :disabled="!selectedBatchId" @click="loadBatchDetails">
+                开始练习
+              </el-button>
+            </el-form-item>
           </div>
-
-          <el-form-item label="提交答案">
-            <el-radio-group
-              v-if="exerciseType === 'single_choice'"
-              v-model="answerChoice"
-              class="answer-options"
-            >
-              <el-radio-button label="A">A</el-radio-button>
-              <el-radio-button label="B">B</el-radio-button>
-              <el-radio-button label="C">C</el-radio-button>
-              <el-radio-button label="D">D</el-radio-button>
-            </el-radio-group>
-
-            <el-radio-group
-              v-else-if="exerciseType === 'true_false'"
-              v-model="answerBoolean"
-              class="answer-options"
-            >
-              <el-radio-button :label="true">正确</el-radio-button>
-              <el-radio-button :label="false">错误</el-radio-button>
-            </el-radio-group>
-
-            <el-input
-              v-else
-              v-model="answerText"
-              type="textarea"
-              :rows="5"
-              placeholder="请输入简答内容"
-            />
-          </el-form-item>
         </el-form>
 
-        <div class="form-actions">
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" :loading="grading" @click="handleGrade">
-            提交评测
-          </el-button>
-        </div>
-
-        <div class="results-section">
-          <div class="section-title">评测结果</div>
-          <el-card v-if="gradingResult" class="result-card" shadow="never">
-            <div class="result-header">
-              <div class="result-title">
-                {{ gradingResult.correct ? "判定：正确" : "判定：需改进" }}
-              </div>
-              <div class="result-score">得分：{{ gradingResult.score }}</div>
+        <div v-if="currentExercises.length" class="exercise-solving-section mt-8">
+          <div class="section-title">练习题目 (共 {{ currentExercises.length }} 题)</div>
+          
+          <div v-for="(exercise, index) in currentExercises" :key="exercise.exercise_id" class="solve-card mb-6">
+            <div class="solve-header">
+              <span class="solve-index">第 {{ index + 1 }} 题</span>
+              <el-tag size="small" effect="plain">{{ typeLabel(exercise.type) }}</el-tag>
             </div>
-            <div class="result-body">
-              <div class="result-row">
-                <span class="result-label">反馈</span>
-                <span class="result-text">{{ gradingResult.feedback }}</span>
-              </div>
-              <div class="result-row">
-                <span class="result-label">建议</span>
-                <span class="result-text">
-                  {{ gradingResult.suggestion || "暂无补充建议" }}
-                </span>
-              </div>
+            
+            <div class="solve-question mt-4">{{ exercise.question }}</div>
+
+            <div v-if="exercise.type === 'single_choice'" class="solve-options mt-4">
+              <el-radio-group v-model="studentAnswers[exercise.exercise_id]" class="vertical-radio-group">
+                <el-radio v-for="opt in exercise.options" :key="opt.key" :label="opt.key">
+                  <span class="opt-key">{{ opt.key }}.</span> {{ opt.text }}
+                </el-radio>
+              </el-radio-group>
             </div>
 
-            <div v-if="gradingResult.matched_points?.length" class="result-tags">
-              <div class="tag-label">已覆盖要点</div>
-              <div class="tag-list">
-                <span
-                  v-for="point in gradingResult.matched_points"
-                  :key="point"
-                  class="tag success"
-                >
-                  {{ point }}
-                </span>
-              </div>
+            <div v-else-if="exercise.type === 'true_false'" class="solve-options mt-4">
+              <el-radio-group v-model="studentAnswers[exercise.exercise_id]">
+                <el-radio :label="true">正确</el-radio>
+                <el-radio :label="false">错误</el-radio>
+              </el-radio-group>
             </div>
 
-            <div v-if="gradingResult.missing_points?.length" class="result-tags">
-              <div class="tag-label">待补充要点</div>
-              <div class="tag-list">
-                <span
-                  v-for="point in gradingResult.missing_points"
-                  :key="point"
-                  class="tag warning"
-                >
-                  {{ point }}
-                </span>
-              </div>
+            <div v-else class="solve-options mt-4">
+              <el-input
+                v-model="studentAnswers[exercise.exercise_id]"
+                type="textarea"
+                :rows="4"
+                placeholder="请输入你的回答..."
+              />
             </div>
-          </el-card>
-          <div v-else class="empty-result">
-            暂无评测结果，请先选择课程并提交练习答案。
+
+            <!-- 评测结果展示 -->
+            <div v-if="gradingResults[exercise.exercise_id]" class="grading-feedback mt-4">
+              <el-alert
+                :title="gradingResults[exercise.exercise_id].correct ? '回答正确' : '需改进'"
+                :type="gradingResults[exercise.exercise_id].correct ? 'success' : 'warning'"
+                :closable="false"
+                show-icon
+              >
+                <template #default>
+                  <div class="feedback-content">
+                    <p><strong>得分:</strong> {{ gradingResults[exercise.exercise_id].score }}</p>
+                    <p><strong>反馈:</strong> {{ gradingResults[exercise.exercise_id].feedback }}</p>
+                    <p v-if="gradingResults[exercise.exercise_id].suggestion">
+                      <strong>建议:</strong> {{ gradingResults[exercise.exercise_id].suggestion }}
+                    </p>
+                    
+                    <div class="analysis-box mt-2">
+                      <div class="analysis-label">题目解析与答案</div>
+                      <div class="analysis-text">{{ formatAnswer(exercise.answer) }}</div>
+                      <div v-if="exercise.analysis" class="analysis-sub mt-1">{{ exercise.analysis }}</div>
+                    </div>
+                  </div>
+                </template>
+              </el-alert>
+            </div>
+
+            <div class="solve-footer mt-4">
+              <el-button
+                type="primary"
+                size="small"
+                :loading="gradingIds.has(exercise.exercise_id)"
+                :disabled="!canSubmitAnswer(exercise)"
+                @click="submitSingleGrade(exercise)"
+              >
+                {{ gradingResults[exercise.exercise_id] ? '重新提交' : '提交评测' }}
+              </el-button>
+            </div>
           </div>
+        </div>
+        <div v-else class="empty-result">
+          请选择练习批次并点击“开始练习”。
         </div>
       </div>
 
@@ -169,13 +170,15 @@ import { apiRequest } from "../services/api";
 const courses = ref([]);
 const loadingCourses = ref(false);
 const selectedCourse = ref("");
-const exerciseId = ref("");
-const exerciseType = ref("single_choice");
-const answerChoice = ref("");
-const answerBoolean = ref(null);
-const answerText = ref("");
-const grading = ref(false);
-const gradingResult = ref(null);
+
+const batches = ref([]);
+const loadingBatches = ref(false);
+const selectedBatchId = ref("");
+
+const currentExercises = ref([]);
+const studentAnswers = ref({});
+const gradingResults = ref({});
+const gradingIds = ref(new Set());
 
 const loadCourses = async () => {
   loadingCourses.value = true;
@@ -188,74 +191,100 @@ const loadCourses = async () => {
   }
 };
 
-const resetForm = () => {
-  exerciseId.value = "";
-  exerciseType.value = "single_choice";
-  answerChoice.value = "";
-  answerBoolean.value = null;
-  answerText.value = "";
-  gradingResult.value = null;
+const loadBatches = async () => {
+  if (!selectedCourse.value) {
+    batches.value = [];
+    return;
+  }
+  loadingBatches.value = true;
+  try {
+    const payload = await apiRequest(`/courses/${selectedCourse.value}/exercises/batches`);
+    batches.value = payload;
+  } catch (error) {
+    ElMessage.error(error.message || "加载批次失败");
+  } finally {
+    loadingBatches.value = false;
+  }
 };
 
-const handleGrade = async () => {
-  if (!selectedCourse.value) {
-    ElMessage.warning("请先选择课程");
-    return;
-  }
-  if (!exerciseId.value.trim()) {
-    ElMessage.warning("请填写练习编号");
-    return;
-  }
-
-  let answer = "";
-  if (exerciseType.value === "single_choice") {
-    if (!answerChoice.value) {
-      ElMessage.warning("请选择答案选项");
-      return;
-    }
-    answer = answerChoice.value;
-  } else if (exerciseType.value === "true_false") {
-    if (answerBoolean.value === null) {
-      ElMessage.warning("请选择判断结果");
-      return;
-    }
-    answer = answerBoolean.value;
-  } else {
-    if (!answerText.value.trim()) {
-      ElMessage.warning("请填写简答内容");
-      return;
-    }
-    answer = answerText.value.trim();
-  }
-
-  grading.value = true;
-  gradingResult.value = null;
+const loadBatchDetails = async () => {
+  if (!selectedBatchId.value) return;
   try {
-    gradingResult.value = await apiRequest(
+    const payload = await apiRequest(`/courses/${selectedCourse.value}/exercises/batches/${selectedBatchId.value}`);
+    currentExercises.value = payload.exercises || [];
+    studentAnswers.value = {};
+    gradingResults.value = {};
+    gradingIds.value.clear();
+    ElMessage.success(`已加载 ${currentExercises.value.length} 道练习题`);
+  } catch (error) {
+    ElMessage.error(error.message || "加载题目详情失败");
+  }
+};
+
+const submitSingleGrade = async (exercise) => {
+  const answer = studentAnswers.value[exercise.exercise_id];
+  if (!canSubmitAnswer(exercise)) {
+    ElMessage.warning("请先填写答案");
+    return;
+  }
+
+  gradingIds.value.add(exercise.exercise_id);
+  try {
+    const result = await apiRequest(
       `/courses/${selectedCourse.value}/exercises/grade`,
       {
         method: "POST",
         body: JSON.stringify({
-          exercise_id: exerciseId.value.trim(),
+          exercise_id: exercise.exercise_id,
           course_id: selectedCourse.value,
-          type: exerciseType.value,
+          type: exercise.type,
           answer,
         }),
       }
     );
+    gradingResults.value = {
+      ...gradingResults.value,
+      [exercise.exercise_id]: result,
+    };
+    ElMessage.success("评测完成");
   } catch (error) {
     ElMessage.error(error.message || "评测失败");
   } finally {
-    grading.value = false;
+    gradingIds.value.delete(exercise.exercise_id);
   }
 };
 
-watch(exerciseType, () => {
-  answerChoice.value = "";
-  answerBoolean.value = null;
-  answerText.value = "";
-  gradingResult.value = null;
+const canSubmitAnswer = (exercise) => {
+  const answer = studentAnswers.value[exercise.exercise_id];
+  if (exercise.type === "true_false") {
+    return answer === true || answer === false;
+  }
+  if (exercise.type === "short_answer") {
+    return typeof answer === "string" && answer.trim().length > 0;
+  }
+  return !!answer;
+};
+
+watch(selectedCourse, () => {
+  loadBatches();
+  selectedBatchId.value = "";
+  currentExercises.value = [];
 });
+
+const typeLabel = (type) => {
+  const map = {
+    single_choice: "单选题",
+    true_false: "判断题",
+    short_answer: "简答题",
+  };
+  return map[type] || type;
+};
+
+const formatAnswer = (answer) => {
+  if (answer === true) return "正确";
+  if (answer === false) return "错误";
+  return answer || "-";
+};
 
 onMounted(() => {
   loadCourses();
@@ -263,6 +292,79 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.solve-card {
+  padding: 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: white;
+}
+
+.solve-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.solve-index {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.solve-question {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.vertical-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.opt-key {
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.analysis-box {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.analysis-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+}
+
+.analysis-text {
+  font-weight: 600;
+}
+
+.analysis-sub {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.mb-6 {
+  margin-bottom: 24px;
+}
+
+.mt-8 {
+  margin-top: 32px;
+}
+
 .grade-page {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,57 @@
+[
+  {
+    "chunk_id": "chunk_983f48aa62e9193c",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c2e8c17e99c4d44b",
+    "source_doc_name": "5-transformers 操作篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "5-transformers 操作篇.pdf > 1. 如何 利用 transformers 加载 Bert 模型? > 片段 1",
+    "content": "如何利用transformers加载Bert模型?通过不到十行代码即可实现。首先导入torch和transformers库中的BertModel、BertTokenizer。指定模型名称为'bert-base-uncased',使用from_pretrained加载分词器和模型。对输入文本\"Here is some text to encode\"进行编码,添加特殊token后转换为tensor。然后通过model(input_ids)获取最后一层隐层输出last_hidden_states,其形状为(1, 9, 768),即batch_size、序列长度和隐藏维度。",
+    "order_index": 1,
+    "char_count": 286
+  },
+  {
+    "chunk_id": "chunk_e4d690b537551933",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c2e8c17e99c4d44b",
+    "source_doc_name": "5-transformers 操作篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "5-transformers 操作篇.pdf > 1. 如何 利用 transformers 加载 Bert 模型? > 片段 2",
+    "content": "import torch\nfrom transformers import BertModel, BertTokenizer\n\nmodel_name = 'bert-base-uncased'\ntokenizer = BertTokenizer.from_pretrained(model_name)\nmodel = BertModel.from_pretrained(model_name)\ninput_text = \"Here is some text to encode\"\ninput_ids = tokenizer.encode(input_text, add_special_tokens=True)\ninput_ids = torch.tensor([input_ids])\nwith torch.no_grad():\n last_hidden_states = model(input_ids)[0]",
+    "order_index": 2,
+    "char_count": 407
+  },
+  {
+    "chunk_id": "chunk_57e0ef913f055d40",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c2e8c17e99c4d44b",
+    "source_doc_name": "5-transformers 操作篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "5-transformers 操作篇.pdf > 2. 如何 利用 transformers 输出 Bert 指定 hidden_state ? > 片段 3",
+    "content": "Bert默认有十二层网络结构,但在某些任务中可能不需要全部层数的输出。为了仅获取特定的隐藏层状态,可以在配置中设置output_hidden_states参数。在bert-base-uncased模型目录下的config.json文件中,将config.output_hidden_states设为True,这样模型前向传播时会返回所有隐藏层的输出。之后通过model.config.output_hidden_states = True动态修改配置,确保outputs包含hidden_states元组。",
+    "order_index": 3,
+    "char_count": 253
+  },
+  {
+    "chunk_id": "chunk_1ce2c462bf25dfaa",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c2e8c17e99c4d44b",
+    "source_doc_name": "5-transformers 操作篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "5-transformers 操作篇.pdf > 3. BERT 获取最后一层或每一层网络的向量输出 > 片段 4",
+    "content": "transformer最后一层输出包括:last_hidden_state,形状为(batch_size, sequence_length, hidden_size),表示模型最后一层对每个token的隐藏状态;pooler_output,形状为(batch_size, hidden_size),是[CLS] token经池化后的表示,由线性层加Tanh激活得到,但通常不作为语义汇总的最佳选择。可通过平均整个序列的last_hidden_state获得更好的句向量表示。",
+    "order_index": 4,
+    "char_count": 237
+  },
+  {
+    "chunk_id": "chunk_7a53deb19b0e0bd6",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_c2e8c17e99c4d44b",
+    "source_doc_name": "5-transformers 操作篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "5-transformers 操作篇.pdf > 3. BERT 获取最后一层或每一层网络的向量输出 > 片段 5",
+    "content": "若需获取每一层的输出,应设置config.output_hidden_states=True。此时outputs.hidden_states将返回一个元组,包含13个元素:索引0为embedding层输出,shape为(batch_size, sequence_length, 768);索引1到12对应12个Transformer层的输出。可通过hidden_states[0]获取嵌入层输出,hidden_states[1:]获取所有注意力层输出。此外,attentions也可通过设置output_attentions=True返回每层注意力权重。",
+    "order_index": 5,
+    "char_count": 277
+  }
+]

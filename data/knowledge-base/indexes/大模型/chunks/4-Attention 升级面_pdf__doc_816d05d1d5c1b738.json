@@ -1,0 +1,112 @@
+[
+  {
+    "chunk_id": "chunk_38807c8d870b8598",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 1 传统 Attention 存在哪些问题? > 片段 1",
+    "content": "传统 Attention 存在上下文长度约束问题;速度慢,内存占用大。这些问题限制了其在长序列任务中的应用。同时,在推理过程中需要反复加载巨大的 KV cache,导致内存开销大,性能受内存限制。",
+    "order_index": 1,
+    "char_count": 98
+  },
+  {
+    "chunk_id": "chunk_c5a3e959a97bbbd8",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 2 Attention 优化方向 > 片段 2",
+    "content": "Attention 优化方向包括:提升上下文长度、加速并减少内存占用。主要方法有:稀疏 attention,引入稀疏偏差降低复杂性;线性化 attention,通过核函数实现线性复杂度;原型与内存压缩,减少键值对数量;低阶 self-Attention,捕捉低阶特性;Attention 与先验,使用先验分布替代标准 attention;改进多头机制,探索不同结构。",
+    "order_index": 2,
+    "char_count": 183
+  },
+  {
+    "chunk_id": "chunk_a1f8806c57480f9d",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 4.1 Multi-head Attention 存在什么问题? > 片段 3",
+    "content": "Multi-head Attention 在每个注意力头上维护独立的 query、key 和 value,导致推理时需存储大量 KV cache,显存占用高,影响推理效率。训练过程虽不受显著影响,但推理阶段成为内存瓶颈,尤其在大规模模型中更为明显。",
+    "order_index": 3,
+    "char_count": 124
+  },
+  {
+    "chunk_id": "chunk_b82b605356fdb298",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 4.2 介绍一下 Multi-Query Attention? > 片段 4",
+    "content": "Multi-Query Attention 在所有注意力头上共享 key 和 value,仅保留多个 query 头。这种设计减少了 KV cache 的大小,从而降低显存占用,提升推理速度,适用于需要高效推理的大模型场景。",
+    "order_index": 4,
+    "char_count": 112
+  },
+  {
+    "chunk_id": "chunk_a8c7db84cabdf034",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 4.3 对比一下 Multi-head Attention 和 Multi-Query Attention? > 片段 5",
+    "content": "Multi-head Attention 每个头有独立的 query、key 和 value,而 Multi-Query Attention 共享 key 和 value。前者精度较高但显存消耗大,后者牺牲少量效果换取显著的内存和速度优化。Falcon、PaLM、ChatGLM2-6B 均采用该技术,细节略有差异。",
+    "order_index": 5,
+    "char_count": 158
+  },
+  {
+    "chunk_id": "chunk_eab213fafcc6e0db",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 4.4 Multi-Query Attention 这样做的好处是什么? > 片段 6",
+    "content": "Multi-Query Attention 的主要好处是减少 KV cache 的大小,降低显存占用,提升推理速度。在保持模型参数量基本不变的前提下,有效缓解内存瓶颈,适合部署在资源受限环境下的大模型应用。",
+    "order_index": 6,
+    "char_count": 103
+  },
+  {
+    "chunk_id": "chunk_b7d5e427b171103c",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 4.5 有哪些模型是使用 Multi-Query Attention? > 片段 7",
+    "content": "使用 Multi-Query Attention 的代表模型包括 Falcon、PaLM 和 ChatGLM2-6B。这些模型在实际部署中通过共享 key 和 value 来优化推理效率,尽管存在细微的效果损失,但在性能上获得显著提升。",
+    "order_index": 7,
+    "char_count": 118
+  },
+  {
+    "chunk_id": "chunk_5100c768cc408978",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 5 Grouped-query Attention > 5.1 什么是 Grouped-query Attention? > 片段 8",
+    "content": "Grouped-query Attention 介于 multi-head 和 multi-query 之间,将多个 query 头分组,每组共享一组 key 和 value。这种方式在性能与效果之间取得平衡,既减少了 KV cache,又保留了一定的表达能力。",
+    "order_index": 8,
+    "char_count": 131
+  },
+  {
+    "chunk_id": "chunk_5d2c6cec27f92da7",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 5 Grouped-query Attention > 5.2 有哪些大模型使用 Grouped-query Attention? > 片段 9",
+    "content": "使用 Grouped-query Attention 的大模型包括 ChatGLM2 和 LLaMA2-34B/70B。该机制通过分组共享 key 和 value,在保证模型表现的同时有效降低显存消耗,适用于超大规模语言模型的优化。",
+    "order_index": 9,
+    "char_count": 116
+  },
+  {
+    "chunk_id": "chunk_c874951de1b53f3d",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_816d05d1d5c1b738",
+    "source_doc_name": "4-Attention 升级面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "4-Attention 升级面.pdf > 6 Flash Attention > 片段 10",
+    "content": "FlashAttention 核心是用分块 softmax 等价替代传统 softmax,结合重计算与 kernel 融合技术,节约 HBM,高效利用 SRAM,省显存且提速度。代表模型如 LLaMA 和 Falcon 均采用此技术加速计算。关键词:HBM、SRAM、分块 Softmax、重计算、Kernel 融合。\n\n并行 transformer block 使用并行公式替代串行计算,提升约 15% 的训练速度。在 8B 参数规模下可能有轻微效果损失,但在 62B 规模下无显著损失。Falcon、PaLM 等模型使用该技术加速训练。为保持参数一致,Falcon 增大隐藏维度至 4544,ChatGLM2 增大 FFN 中间维度至 13696。",
+    "order_index": 10,
+    "char_count": 326
+  }
+]

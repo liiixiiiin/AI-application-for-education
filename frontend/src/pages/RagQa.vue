@@ -39,24 +39,51 @@
                 style="width: 100%"
               />
             </el-form-item>
+
+            <el-form-item label="启用 RAGAS 评测" class="eval-toggle">
+              <el-switch v-model="isEvaluationMode" />
+            </el-form-item>
           </div>
 
           <el-form-item label="输入问题">
             <el-input
               v-model="question"
               type="textarea"
-              :rows="4"
+              :rows="3"
               placeholder="例如：主键和外键的作用是什么？"
               maxlength="200"
               show-word-limit
             />
           </el-form-item>
+
+          <el-collapse-transition>
+            <div v-if="isEvaluationMode">
+              <el-form-item label="标准答案 (可选)" hint="提供标准答案可计算精度与召回率">
+                <el-input
+                  v-model="groundTruth"
+                  type="textarea"
+                  :rows="2"
+                  placeholder="输入标准答案以进行更全面的评测..."
+                />
+              </el-form-item>
+            </div>
+          </el-collapse-transition>
         </el-form>
 
         <div class="form-actions">
-          <div class="form-hint">回答将附带引用片段（占位流程）。</div>
-          <el-button type="primary" :loading="sending" @click="submitQuestion">
-            发起问答
+          <div class="form-hint">
+            {{
+              isEvaluationMode
+                ? "评测将计算忠实度、相关性等指标，耗时较长。"
+                : "回答将附带引用片段，模型未配置时返回占位回复。"
+            }}
+          </div>
+          <el-button
+            :type="isEvaluationMode ? 'warning' : 'primary'"
+            :loading="sending"
+            @click="submitQuestion"
+          >
+            {{ isEvaluationMode ? "发起评测" : "发起问答" }}
           </el-button>
         </div>
 
@@ -75,6 +102,18 @@
                 <p class="history-answer">{{ item.answer }}</p>
               </div>
 
+              <div v-if="item.scores && Object.keys(item.scores).length" class="history-block">
+                <div class="history-label">RAGAS 评测指标</div>
+                <div class="score-grid">
+                  <div v-for="(score, name) in item.scores" :key="name" class="score-item">
+                    <div class="score-name">{{ formatMetricName(name) }}</div>
+                    <div class="score-value" :class="getScoreClass(score)">
+                      {{ (score * 100).toFixed(1) }}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="history-block">
                 <div class="history-label">引用</div>
                 <div v-if="item.citations.length" class="citation-list">
@@ -88,6 +127,18 @@
                     </div>
                     <div class="citation-meta">
                       {{ citation.source_doc_name }} · {{ citation.chunk_id }}
+                      <span v-if="citation.score !== undefined && citation.score !== null" class="citation-score">
+                        (V: {{ ((1 - citation.score) * 100).toFixed(0) }}%
+                        <span v-if="citation.bm25_score !== undefined && citation.bm25_score !== null">
+                          / B: {{ (citation.bm25_score * 100).toFixed(0) }}%
+                        </span>
+                        <span v-if="citation.hybrid_score !== undefined && citation.hybrid_score !== null">
+                          / H: {{ (citation.hybrid_score * 100).toFixed(0) }}%
+                        </span>
+                        <span v-if="citation.rerank_score !== undefined && citation.rerank_score !== null">
+                          / R: {{ (citation.rerank_score * 100).toFixed(0) }}%
+                        </span>)
+                      </span>
                     </div>
                     <div class="citation-excerpt">
                       {{ citation.excerpt || "暂无片段内容" }}
@@ -118,8 +169,8 @@
               <p>可调整 Top-K 值，控制引用数量。</p>
             </li>
             <li>
-              <strong>占位流程</strong>
-              <p>当前为占位实现，后续接入模型生成。</p>
+              <strong>模型配置</strong>
+              <p>若后端已配置外部模型 API，将生成真实答案。</p>
             </li>
           </ul>
         </div>
@@ -131,7 +182,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { MessageSquare } from "lucide-vue-next";
-import { apiRequest } from "../services/api";
+import { apiRequest, apiStream } from "../services/api";
 import { ElMessage } from "element-plus";
 
 const courses = ref([]);
@@ -139,8 +190,36 @@ const loadingCourses = ref(false);
 const selectedCourse = ref("");
 const question = ref("");
 const topK = ref(5);
+const isEvaluationMode = ref(false);
+const groundTruth = ref("");
 const sending = ref(false);
 const history = ref([]);
+
+const formatMetricName = (name) => {
+  const map = {
+    faithfulness: "忠实度",
+    answer_relevancy: "答案相关性",
+    context_precision: "上下文精度",
+    context_recall: "上下文召回率",
+  };
+  return map[name] || name;
+};
+
+const getScoreClass = (score) => {
+  if (score >= 0.8) return "score-high";
+  if (score >= 0.5) return "score-medium";
+  return "score-low";
+};
+
+const prependHistoryItem = (item) => {
+  history.value = [item, ...history.value];
+};
+
+const updateHistoryItem = (id, updates) => {
+  const index = history.value.findIndex((item) => item.id === id);
+  if (index === -1) return;
+  history.value.splice(index, 1, { ...history.value[index], ...updates });
+};
 
 const loadCourses = async () => {
   loadingCourses.value = true;
@@ -168,30 +247,78 @@ const submitQuestion = async () => {
   if (sending.value) return;
 
   sending.value = true;
+  const endpoint = isEvaluationMode.value
+    ? `/courses/${selectedCourse.value}/qa/evaluate`
+    : `/courses/${selectedCourse.value}/qa/stream`;
+
   const payload = {
     course_id: selectedCourse.value,
     question: question.value.trim(),
     top_k: topK.value,
   };
 
+  if (isEvaluationMode.value && groundTruth.value.trim()) {
+    payload.ground_truth = groundTruth.value.trim();
+  }
+
   try {
-    const response = await apiRequest(`/courses/${selectedCourse.value}/qa`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-    history.value = [
-      {
+    if (isEvaluationMode.value) {
+      const response = await apiRequest(endpoint, {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      prependHistoryItem({
         id: `${Date.now()}`,
         question: payload.question,
         answer: response.answer || "暂无回答",
         citations: response.citations || [],
+        scores: response.scores || null,
         time: new Date().toLocaleString(),
-      },
-      ...history.value,
-    ];
-    question.value = "";
+      });
+      question.value = "";
+      groundTruth.value = "";
+    } else {
+      const entryId = `${Date.now()}`;
+      let streamedAnswer = "";
+      prependHistoryItem({
+        id: entryId,
+        question: payload.question,
+        answer: "",
+        citations: [],
+        scores: null,
+        time: new Date().toLocaleString(),
+      });
+      await apiStream(
+        endpoint,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        },
+        (event, data) => {
+          if (event === "delta") {
+            const text = data?.text || "";
+            if (text) {
+              streamedAnswer += text;
+              updateHistoryItem(entryId, { answer: streamedAnswer });
+            }
+            return;
+          }
+          if (event === "error") {
+            ElMessage.error(data?.message || "请求失败");
+            return;
+          }
+          if (event === "done") {
+            updateHistoryItem(entryId, {
+              answer: data?.answer || streamedAnswer || "暂无回答",
+              citations: data?.citations || [],
+            });
+            question.value = "";
+          }
+        }
+      );
+    }
   } catch (error) {
-    ElMessage.error(error.message || "问答请求失败");
+    ElMessage.error(error.message || "请求失败");
   } finally {
     sending.value = false;
   }
@@ -222,8 +349,15 @@ onMounted(loadCourses);
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 180px;
+  grid-template-columns: 1fr 180px 140px;
   gap: 16px;
+  align-items: flex-end;
+}
+
+.eval-toggle {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
 }
 
 .form-actions {
@@ -236,6 +370,44 @@ onMounted(loadCourses);
 .form-hint {
   color: var(--color-text-muted);
   font-size: 14px;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.score-item {
+  background: #fff;
+  border: 1px solid var(--color-border-soft);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.score-name {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.score-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.score-high {
+  color: #10b981;
+}
+
+.score-medium {
+  color: #f59e0b;
+}
+
+.score-low {
+  color: #ef4444;
 }
 
 .history-section {
@@ -316,6 +488,12 @@ onMounted(loadCourses);
   font-size: 12px;
   color: var(--color-text-muted);
   margin-bottom: 6px;
+}
+
+.citation-score {
+  margin-left: 8px;
+  color: var(--color-primary);
+  font-weight: 500;
 }
 
 .citation-excerpt {

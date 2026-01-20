@@ -52,3 +52,41 @@
 ## 3. 评价指标（最小）
 - 引用字段存在且可回溯到检索结果。
 - 答案与引用内容语义一致。
+
+## 4. RAGAS 评测接口（扩展）
+
+### 4.1 评测输入
+```
+{
+  "course_id": "course_001",
+  "question": "主键和外键的作用是什么？",
+  "answer": "主键用于唯一标识表中的记录...",
+  "ground_truth": "主键用于唯一标识记录，外键建立表间引用关系。",
+  "top_k": 5,
+  "metrics": ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+}
+```
+
+### 4.2 评测输出
+```
+{
+  "answer": "主键用于唯一标识表中的记录...",
+  "contexts": ["..."],
+  "citations": [
+    {
+      "chunk_id": "chunk_042",
+      "source_doc_id": "doc_001",
+      "source_doc_name": "course-outline.md",
+      "title_path": "课程大纲 > 第 1 章：关系模型与数据表",
+      "excerpt": "主键与外键的作用..."
+    }
+  ],
+  "metrics": ["faithfulness", "answer_relevancy", "context_precision", "context_recall"],
+  "scores": {
+    "faithfulness": 0.91,
+    "answer_relevancy": 0.88,
+    "context_precision": 0.85,
+    "context_recall": 0.79
+  }
+}
+```

@@ -49,5 +49,16 @@ def init_db() -> None:
         )
         """
     )
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS knowledge_points (
+            id TEXT PRIMARY KEY,
+            course_id TEXT NOT NULL,
+            point TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (course_id) REFERENCES courses (id)
+        )
+        """
+    )
     conn.commit()
     conn.close()
