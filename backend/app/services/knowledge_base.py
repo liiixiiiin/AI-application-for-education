@@ -1,20 +1,20 @@
 from collections import Counter, defaultdict
 from typing import List
+import asyncio
 import json
 import logging
 import os
 import re
 import tempfile
+import time
 import unicodedata
 from urllib.parse import urlparse
 
-import bs4
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import (
     Docx2txtLoader,
     PyPDFLoader,
     TextLoader,
-    WebBaseLoader,
 )
 from langchain_core.documents import Document
 from rank_bm25 import BM25Okapi
@@ -25,6 +25,8 @@ except Exception:
 
 from ..utils import generate_id, now_iso
 from .langchain_client import get_chat_model, get_embeddings, get_reranker
+from .rag_utils import _select_mcp_tool
+from langchain_mcp_adapters.client import MultiServerMCPClient
 
 
 _DOCUMENT_STORE: dict[str, list[dict]] = defaultdict(list)
@@ -710,14 +712,21 @@ def _llm_chunk_text(
     override: bool | None = None,
 ) -> list[dict]:
     if not _should_use_llm_chunking(course_id, doc_type, override=override):
+        _logger.info("[LLM切分] 跳过：策略判定未启用 (doc=%s, course=%s, type=%s)", doc_name, course_id, doc_type)
         return []
     chat_model = get_chat_model()
     if not chat_model:
+        _logger.warning("[LLM切分] 跳过：未配置 DashScope API Key 或 Chat 模型不可用 (doc=%s)", doc_name)
         return []
-    max_input = int(os.getenv("RAG_LLM_CHUNK_MAX_INPUT", "6000"))
+    max_input = int(os.getenv("RAG_LLM_CHUNK_MAX_INPUT", "12000"))
     if len(content) > max_input:
+        _logger.info(
+            "[LLM切分] 跳过：文档内容过长 (%d 字符 > 限制 %d)，回退规则切分 (doc=%s)",
+            len(content), max_input, doc_name,
+        )
         return []
 
+    _logger.info("[LLM切分] 开始调用大模型切分 (doc=%s, 长度=%d, 模式=%s)", doc_name, len(content), "问答" if qa_mode else "通用")
     mode_hint = "问答" if qa_mode else "通用"
     prompt = (
         "你是中文文档切分助手。请根据输入内容生成语义连贯的片段列表。\n"
@@ -736,20 +745,23 @@ def _llm_chunk_text(
     try:
         response = chat_model.invoke(prompt)
     except Exception:
-        _logger.exception("LLM chunking failed for %s", doc_name)
+        _logger.exception("[LLM切分] 模型调用异常，回退规则切分 (doc=%s)", doc_name)
         return []
 
     raw_text = getattr(response, "content", response)
     parsed = _safe_json_load(str(raw_text))
     if not parsed:
+        _logger.warning("[LLM切分] 模型返回内容 JSON 解析失败，回退规则切分 (doc=%s, raw_len=%d)", doc_name, len(str(raw_text)))
         return []
     if isinstance(parsed, dict):
         payloads = parsed.get("chunks")
     else:
         payloads = parsed
     if not isinstance(payloads, list):
+        _logger.warning("[LLM切分] 模型返回格式不符（非 list），回退规则切分 (doc=%s)", doc_name)
         return []
     normalized = _normalize_llm_payloads(payloads, doc_name, min_len, max_len)
+    _logger.info("[LLM切分] 成功：生成 %d 个片段 (doc=%s)", len(normalized), doc_name)
     return normalized
 
 
@@ -1020,6 +1032,11 @@ def _build_chunks(
     min_len = 200 if qa_mode else 80
     max_len = 400 if qa_mode else 600
 
+    _logger.info(
+        "[切分] 开始处理文档 (doc=%s, type=%s, 长度=%d, qa_mode=%s, llm_override=%s)",
+        document["name"], doc_type, len(cleaned), qa_mode, use_llm_chunking,
+    )
+
     chunks: list[dict] = []
     payloads = _split_text_into_chunks(
         cleaned,
@@ -1029,6 +1046,8 @@ def _build_chunks(
         min_len=min_len,
         max_len=max_len,
     )
+    _logger.info("[切分] 规则切分完成：%d 个片段 (doc=%s)", len(payloads), document["name"])
+
     llm_payloads = _llm_chunk_text(
         cleaned,
         document["name"],
@@ -1040,7 +1059,10 @@ def _build_chunks(
         override=use_llm_chunking,
     )
     if llm_payloads:
+        _logger.info("[切分] 最终采用：LLM 切分结果 (%d 个片段, doc=%s)", len(llm_payloads), document["name"])
         payloads = llm_payloads
+    else:
+        _logger.info("[切分] 最终采用：规则切分结果 (%d 个片段, doc=%s)", len(payloads), document["name"])
     if not payloads:
         payloads = [{"text": cleaned, "title_path": document["name"]}]
     for index, payload in enumerate(payloads, start=1):
@@ -1248,30 +1270,97 @@ def _derive_name_from_url(url: str) -> str:
     return parsed.netloc or url
 
 
-def _build_web_bs_kwargs(parse_classes: list[str] | None) -> dict:
-    if not parse_classes:
-        return {}
-    cleaned = [item.strip() for item in parse_classes if item and item.strip()]
-    if not cleaned:
-        return {}
-    return {"parse_only": bs4.SoupStrainer(class_=tuple(cleaned))}
+async def _call_web_parser_mcp(url: str, parse_classes: list[str] | None) -> dict | str | None:
+    api_key = os.getenv("DASHSCOPE_API_KEY", "").strip()
+    if not api_key:
+        print("[backend] mcp web parser skipped: missing api key")
+        return None
+    client = MultiServerMCPClient(
+        {
+            "qwenimage": {
+                "transport": "sse",
+                "url": "https://dashscope.aliyuncs.com/api/v1/mcps/WebParser/sse",
+                "headers": {"Authorization": f"Bearer {api_key}"},
+            }
+        }
+    )
+    tools = await client.get_tools()
+    if not tools:
+        print("[backend] mcp web parser skipped: no tools")
+        return None
+    instruction = f"解析网页内容并返回 markdown，URL: {url}"
+    tool, payload = _select_mcp_tool(tools, instruction)
+    if not tool:
+        tool = next((t for t in tools if "parse" in t.name.lower()), tools[0])
+        payload = {"url": url, "format": "markdown"}
+    if parse_classes:
+        payload["parse_classes"] = [item for item in parse_classes if item and item.strip()]
+    print(
+        "[backend] mcp web parser invoke",
+        {"tool": getattr(tool, "name", "unknown"), "payload": payload},
+    )
+    retries = 3
+    backoff = 1.5
+    for attempt in range(1, retries + 1):
+        try:
+            if hasattr(tool, "ainvoke"):
+                return await asyncio.wait_for(tool.ainvoke(payload), timeout=30)
+            return await asyncio.wait_for(asyncio.to_thread(tool.invoke, payload), timeout=30)
+        except Exception as exc:
+            status_code = getattr(getattr(exc, "response", None), "status_code", None)
+            if status_code == 429 and attempt < retries:
+                wait_seconds = backoff ** attempt
+                _logger.warning(
+                    "web parser rate limited, retrying",
+                    extra={"url": url, "attempt": attempt, "wait_seconds": wait_seconds},
+                )
+                await asyncio.sleep(wait_seconds)
+                continue
+            _logger.exception("web parser failed", extra={"url": url, "attempt": attempt})
+            return None
+
+
+def _run_web_parser_mcp(url: str, parse_classes: list[str] | None) -> dict | str | None:
+    try:
+        print("[backend] web parser mcp request", {"url": url, "classes": parse_classes or []})
+        return asyncio.run(_call_web_parser_mcp(url, parse_classes))
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        try:
+            return loop.run_until_complete(_call_web_parser_mcp(url, parse_classes))
+        finally:
+            loop.close()
+
+
+def _extract_web_parser_content(payload: dict | str | None) -> tuple[str, str | None]:
+    if payload is None:
+        return "", None
+    if isinstance(payload, str):
+        return payload, None
+    if isinstance(payload, dict):
+        title = payload.get("title") or payload.get("page_title")
+        for key in ("content", "text", "markdown", "result", "data"):
+            value = payload.get(key)
+            if isinstance(value, str) and value.strip():
+                return value, title
+            if isinstance(value, dict):
+                nested = value.get("content") or value.get("text")
+                if isinstance(nested, str) and nested.strip():
+                    return nested, title
+        return json.dumps(payload, ensure_ascii=False), title
+    return str(payload), None
 
 
 def extract_web_payload(url: str, parse_classes: list[str] | None = None) -> dict:
     parsed = urlparse(url)
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise ValueError("invalid url")
-    bs_kwargs = _build_web_bs_kwargs(parse_classes)
-    loader = WebBaseLoader(web_paths=[url], bs_kwargs=bs_kwargs or None)
-    documents = loader.load()
-    content_parts = [doc.page_content for doc in documents if doc.page_content]
-    content = _normalize_text_content("\n\n".join(content_parts))
-    title = None
-    for doc in documents:
-        metadata = doc.metadata or {}
-        if metadata.get("title"):
-            title = metadata["title"]
-            break
+    payload = _run_web_parser_mcp(url, parse_classes)
+    print("[backend] web parser mcp response", {"url": url, "has_payload": payload is not None})
+    content, title = _extract_web_parser_content(payload)
+    content = _normalize_text_content(content)
+    if not content:
+        raise ValueError("web parser returned empty content")
     name = title or _derive_name_from_url(url)
     return {
         "name": name,

@@ -1,0 +1,134 @@
+[
+  {
+    "chunk_id": "chunk_5a93d8de54eee82e",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 先说总结 > 面试内容 & 难度 > 片段 1",
+    "content": "个人觉得,在LLM应用面试中,问题普遍不偏高深,少有分布式锁、MVCC原理等传统八股文。原因有二:一是大模型应用尚无成熟通用方案,业界仍在探索;二是许多公司今年才All in AI,面试官自身理解有限。例如RAG相关问题多集中于‘最难的是什么?(文档切割)’‘如何解决幻觉?’‘微调与RAG区别?’等。若做过RAG、常读技术文章并能清晰表达,通常可获认可。但需特别注意:掌握微调原理、动手完成过微调及大模型部署,是高频且易失分的关键点——即便算法团队主导,也建议主动实践。",
+    "order_index": 1,
+    "char_count": 236
+  },
+  {
+    "chunk_id": "chunk_7164476f77f6ad32",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 先说总结 > 算法题与八股文 > 片段 2",
+    "content": "算法题约半数为DP,其余多为Easy难度经典题,虽属‘老熟人’,但仅写出代码未必过关,部分公司甚至不考。八股文明显减少,因LLM应用岗更重实践,常由Leader直面问项目;仅当面试官缺乏LLM背景时才考察。但绝不可轻视——多次挂科即因八股准备不足。岗位方向多元:游戏公司聚焦LLM+AB测试(策划/BI/客服)、ToC主推Agent个人助手、ToB侧重解决方案Agent,另有通用Agent平台、内部AI助手、运维Agent等。Offer阶段需横向对比,高期望薪资常致对方拖延,实际涨幅多<20%,30%需耐心与运气。",
+    "order_index": 2,
+    "char_count": 259
+  },
+  {
+    "chunk_id": "chunk_e3b54da9e44e6d18",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 再总结 > 面试策略与复盘 > 片段 3",
+    "content": "每次面试后务必复盘,未答好问题须重新梳理逻辑;对无把握问题坦诚说‘不会’,切忌编造晦涩答案。简历须经大模型润色,但必须人工逐项核验,避免过度包装。持续阅读技术文章以拓展视野、提升二面印象分。表达需流畅清晰,断续易被误判思路混乱。项目效果评估至关重要——无论技术多炫酷,终归要落地见效。此外,时间管理关键:集中面试、集中对比;拉长战线易致安排混乱。建议先接略低于预期的offer建立议价筹码,前提是企业确有意向。",
+    "order_index": 3,
+    "char_count": 205
+  },
+  {
+    "chunk_id": "chunk_f167f25dd2c5dc38",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > LLM 基础 > 片段 4",
+    "content": "常见基础问题包括:大模型训练流程(预训练→SFT→RLHF);Transformer架构中Encoder(如BERT)与Decoder(如GPT)的核心差异;Function Call的监督微调实现方式;主流微调方案(LoRA、QLoRA、Adapter)及实操经验;分词器原理(如SentencePiece/BPE);Embedding本质(语义向量表征)及所用模型(如bge-m3、text-embedding-3-small)。需结合项目说明选型依据,例如为何选用特定Embedding模型处理中英混合文本,或如何验证分词边界对RAG检索的影响。",
+    "order_index": 4,
+    "char_count": 276
+  },
+  {
+    "chunk_id": "chunk_cdea2c06994e52d9",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > Lib > 片段 5",
+    "content": "LangChain核心是链式调用与模块抽象(PromptTemplate/LLMChain/Retriever),适合快速原型;AutoGen强调角色化Agent协作与对话驱动工作流,适合复杂任务编排。LiteLLM作为网关框架,统一API接口并支持熔断/缓存/路由,常用于多模型灰度发布。手搓Agent多因框架灵活性不足(如动态工具注册、状态强管控需求);MCP(Model Calling Protocol)是标准化函数调用协议,相比Function Call更强调跨模型互操作性与Schema定义,实践中需关注参数校验与错误传播机制。A2A(Agent-to-Agent)指Agent间自主通信范式,适用于多系统协同场景。",
+    "order_index": 5,
+    "char_count": 314
+  },
+  {
+    "chunk_id": "chunk_1200210b465d7d1b",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > Prompt > 片段 6",
+    "content": "ReAct通过‘推理→行动→观察’循环显式分离思维与执行,常结合Thought/Action/Observation三段式Prompt实现;CoT(思维链)通过中间推理步骤提升复杂推理能力,优势在于激发模型隐含逻辑,缺点是长度敏感、易引入噪声。Prompt Caching可复用历史Prompt计算结果,降低重复Token开销。温度值控制随机性(高值发散,低值确定),top-p(核采样)动态截断概率累积分布,top-k限制候选词数量;实际中问答宜用低温度+中top-p,创意生成则反之。需结合业务指标(如准确率/多样性)调优。",
+    "order_index": 6,
+    "char_count": 264
+  },
+  {
+    "chunk_id": "chunk_0ac60176d9a96afd",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > RAG > 片段 7",
+    "content": "RAG即检索增强生成,核心难点在文档切割——需兼顾语义完整性与检索粒度。策略包括按标题/段落/句子分割,辅以滑动窗口、语义分块(如NLTK+嵌入聚类)及元数据注入。多路召回指融合关键词、向量、BM25等多路结果再重排序。文档存储粒度常为段落级,数据库选型依规模而定:中小量用PostgreSQL+pgvector,海量用Qdrant/Milvus;图数据库用于建模实体关系(如政策条款引用链)。Qdrant在亿级向量下性能优异,瓶颈多在IO与内存带宽。规避幻觉需结合检索置信度过滤、引用溯源及后处理校验。微调适配领域术语但成本高,RAG灵活更新但依赖检索质量。效果量化需分层:检索端用HitRate/MRR,生成端用BLEU/ROUGE+人工评估。",
+    "order_index": 7,
+    "char_count": 324
+  },
+  {
+    "chunk_id": "chunk_993f161acad452ea",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > Workflow > 片段 8",
+    "content": "任务拆分依据复杂度与耦合度,如将用户查询分解为‘意图识别→实体抽取→知识检索→答案生成’四步,可提升模块复用性与可调试性。Text2SQL优化需结合Schema Linking(字段对齐)、SQL模板约束及执行反馈强化(DFE)。Query润色目标为消除歧义、补全上下文(如代词指代),常用LLM重写+规则兜底。Code-generation需静态分析校验(AST解析)与沙箱执行验证。若重设计,会引入Plan-and-Execute范式,增加反思节点与失败回滚机制。效果量化采用端到端指标(如SQL执行准确率、代码编译通过率)与人工抽检(逻辑正确性、安全性)。",
+    "order_index": 8,
+    "char_count": 281
+  },
+  {
+    "chunk_id": "chunk_1b6a58afc56e10a7",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > Agent > 片段 9",
+    "content": "Agent项目需明确架构:Single-agent适用于线性任务(如客服问答),Multi-agent按角色分工(Planner/Executor/Checker)提升鲁棒性。长短期记忆分别用Redis(短期会话上下文)与向量库+图谱(长期知识关联),粒度为‘用户会话ID+时间窗口’。Function Call实现工具调用闭环,需定义OpenAPI Schema并处理参数缺失/类型错误。最大难题常是延迟与幻觉权衡,可通过异步检索、结果缓存、流式响应优化端到端延迟。反思机制基于LLM自评输出合理性(如‘该回答是否基于检索证据?’),避免盲目信任。当前趋势正从单点Agent向可组合、可验证、可审计的智能体网络演进。",
+    "order_index": 9,
+    "char_count": 309
+  },
+  {
+    "chunk_id": "chunk_16a84476ceb96880",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > 系统设计题 > 片段 10",
+    "content": "短链系统需考虑哈希碰撞(Base62+布隆过滤器)、高并发跳转(CDN缓存+Redis原子计数)、防刷限流(令牌桶)。分布式锁推荐Redlock或ZooKeeper,避免单点故障。长篇小说文档切割应按章节→段落→语义块三级分层,禁用纯字符截断,需保留标题层级与对话连贯性。论文翻译需OCR预处理+结构识别(LaTeX/MathML保留)+双语对齐微调,输出强制匹配原文段落编号与图表位置。游戏客服助手须构建黑话词典(运营提供+UGC挖掘)并注入RAG元数据;内部文档通过权限标签隔离检索范围。定位线上工程问题可结合日志TraceID+Metrics(P99延迟突增)+Profiling(CPU热点)。多源数据分析宜用Lakehouse架构,统一处理结构化(SQL)与非结构化(向量检索)数据。",
+    "order_index": 10,
+    "char_count": 347
+  },
+  {
+    "chunk_id": "chunk_2971cc5e3baea292",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > 八股 > 片段 11",
+    "content": "Go内存分配基于TCMalloc,分mcache/mcentral/mheap三级,GMP模型调度Goroutine至P执行,GC采用三色标记清除+混合写屏障。Python使用引用计数为主+循环检测辅助,小对象走私有池。Redis中mget底层批量读取多个key,zset用跳表+哈希表实现O(logN)查改。MySQL索引需覆盖查询条件+排序字段,隔离级别依事务需求选择,MVCC通过ReadView+undo log实现快照读。分布式锁可用Redis Lua脚本保证原子性。Kafka Rebalance触发消费者组重分配,可能丢失未提交offset,需enable.auto.commit=false+手动提交。FastAPI基于Starlette异步中间件与Pydantic校验。Go net/http通过bufio.Reader自动处理TCP粘包。HTTP/2支持多路复用、头部压缩、服务端推送,显著降低延迟。Linux调优包括sysctl参数调整、eBPF观测及ss/netstat定位PID与端口。",
+    "order_index": 11,
+    "char_count": 456
+  },
+  {
+    "chunk_id": "chunk_7a1b8ca279665760",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_a516b0b6cd6df38a",
+    "source_doc_name": "大模型应用开发.txt",
+    "source_doc_type": "txt",
+    "title_path": "大模型应用开发.txt > 面试题 > 个人 > 片段 12",
+    "content": "需清晰说明每个项目中的角色(如技术负责人/核心开发)、具体职责(模型选型/系统架构/性能优化)及团队规模(3人小队/10人跨职能组)。离职原因应聚焦发展诉求(如‘希望深耕LLM工程化’而非抱怨前司),体现职业连续性。学习路径需具象:如每日浏览arXiv/LLM Papers、参与HuggingFace社区、复现Paper代码。对大模型应用趋势,可强调‘从Demo走向生产’——需解决可靠性(容错/监控)、成本(推理优化)、合规(数据脱敏/审计追踪)三大瓶颈。职业规划宜分阶段:1年精进Agent工程能力,3年主导AI平台建设,5年推动AI原生产品落地,始终锚定技术深度与业务价值结合点。",
+    "order_index": 12,
+    "char_count": 294
+  }
+]

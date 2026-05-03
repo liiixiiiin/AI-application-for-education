@@ -211,7 +211,7 @@ def _get_saved_knowledge_points(course_id: str) -> list[str]:
     return [row["point"] for row in rows]
 
 
-ALLOWED_TYPES = {"single_choice", "true_false", "short_answer"}
+ALLOWED_TYPES = {"single_choice", "true_false", "short_answer", "fill_in_blank"}
 
 
 def _normalize_types(types: Iterable[str]) -> list[str]:
@@ -307,6 +307,16 @@ def generate_exercises(
                     ],
                 }
             )
+        elif exercise_type == "fill_in_blank":
+            exercise.update(
+                {
+                    "question": f"____的定义是指{knowledge_point}中最核心的基础概念。",
+                    "blanks": [
+                        {"index": 1, "answer": knowledge_point, "alternatives": []},
+                    ],
+                    "analysis": f'本题考查的关键术语是"{knowledge_point}"。',
+                }
+            )
 
         if is_dashscope_configured() and results:
             model_payload = _generate_with_model(
@@ -346,6 +356,16 @@ def _build_prompt(
         "true_false": "题型：判断题。字段：question, answer(true/false), analysis。",
         "short_answer": (
             "题型：简答题。字段：question, answer, rubric(数组包含point与score)。"
+        ),
+        "fill_in_blank": (
+            "题型：填空题。字段：question, blanks, analysis。"
+            "question 中用连续四个下划线 ____ 标记空位。"
+            "要求：空位必须是该知识点的核心术语、专有名词、关键定义或重要概念，"
+            "不要挖出动词、介词、形容词等普通词汇。"
+            "题目的上下文应提供充足线索，让学过该知识点的学生能够推断出答案。"
+            "优先出 1 个空的题目，最多不超过 2 个空。"
+            "blanks 是数组，每项包含 index(从1开始的空位序号)、answer(标准答案)、"
+            "alternatives(可接受的替代答案数组，如同义术语、英文名、常用缩写等)。"
         ),
     }.get(exercise_type, "")
 
@@ -478,6 +498,23 @@ def _apply_model_payload(exercise: dict, exercise_type: str, payload: dict) -> N
                 for item in rubric
                 if isinstance(item, dict)
             ]
+        return
+
+    if exercise_type == "fill_in_blank":
+        blanks = payload.get("blanks")
+        if isinstance(blanks, list) and blanks:
+            exercise["blanks"] = [
+                {
+                    "index": item.get("index", idx + 1),
+                    "answer": str(item.get("answer", "")),
+                    "alternatives": item.get("alternatives") or [],
+                }
+                for idx, item in enumerate(blanks)
+                if isinstance(item, dict)
+            ]
+        analysis = payload.get("analysis")
+        if isinstance(analysis, str):
+            exercise["analysis"] = analysis.strip()
 
 
 def grade_exercise(payload: dict) -> dict:
@@ -490,6 +527,7 @@ def grade_exercise(payload: dict) -> dict:
     correct_answer = None
     rubric = None
     question = None
+    knowledge_points_found: list[str] = []
     dir_path = os.path.join(_EXERCISE_ROOT, course_id)
     if os.path.exists(dir_path):
         for filename in os.listdir(dir_path):
@@ -502,6 +540,7 @@ def grade_exercise(payload: dict) -> dict:
                                 correct_answer = ex.get("answer")
                                 rubric = ex.get("rubric")
                                 question = ex.get("question")
+                                knowledge_points_found = ex.get("knowledge_points", [])
                                 break
                 except Exception:
                     continue
@@ -518,6 +557,7 @@ def grade_exercise(payload: dict) -> dict:
             "score": 1 if correct else 0,
             "feedback": "回答正确。" if correct else f"答案不一致，正确选项是 {expected}。",
             "suggestion": "" if correct else "建议回顾该知识点的核心定义。",
+            "knowledge_points": knowledge_points_found,
         }
 
     if exercise_type == "true_false":
@@ -530,6 +570,7 @@ def grade_exercise(payload: dict) -> dict:
                 "score": 0,
                 "feedback": "未识别的判断题答案，请提交 true/false。",
                 "suggestion": "请确认答案格式后重新提交。",
+                "knowledge_points": knowledge_points_found,
             }
         correct = normalized == expected
         return {
@@ -538,6 +579,85 @@ def grade_exercise(payload: dict) -> dict:
             "score": 1 if correct else 0,
             "feedback": "回答正确。" if correct else "判断结果不正确，请对照知识点再确认。",
             "suggestion": "" if correct else "建议回顾判断依据与相关定义。",
+            "knowledge_points": knowledge_points_found,
+        }
+
+    if exercise_type == "fill_in_blank":
+        blanks = None
+        # Re-scan for blanks from exercise data
+        if os.path.exists(dir_path):
+            for filename in os.listdir(dir_path):
+                if not filename.endswith(".json"):
+                    continue
+                try:
+                    with open(os.path.join(dir_path, filename), "r", encoding="utf-8") as f:
+                        batch_data = json.load(f)
+                        for ex in batch_data.get("exercises", []):
+                            if ex.get("exercise_id") == exercise_id:
+                                blanks = ex.get("blanks")
+                                break
+                except Exception:
+                    continue
+                if blanks is not None:
+                    break
+
+        if not blanks:
+            return {
+                "exercise_id": exercise_id,
+                "correct": False,
+                "score": 0,
+                "feedback": "未找到该填空题的标准答案数据。",
+                "suggestion": "请确认题目 ID 是否正确。",
+                "knowledge_points": knowledge_points_found,
+            }
+
+        student_blanks = student_answer if isinstance(student_answer, list) else [str(student_answer or "")]
+        # Pad student answers to match blanks count
+        while len(student_blanks) < len(blanks):
+            student_blanks.append("")
+
+        correct_count = 0
+        total = len(blanks)
+        details = []
+        for blank in blanks:
+            idx = blank.get("index", 1) - 1
+            std_answer = str(blank.get("answer", "")).strip().lower()
+            alternatives = [str(a).strip().lower() for a in blank.get("alternatives", [])]
+            acceptable = {std_answer} | set(alternatives)
+
+            student_text = str(student_blanks[idx]).strip().lower() if idx < len(student_blanks) else ""
+            matched = student_text in acceptable
+            if matched:
+                correct_count += 1
+            details.append({
+                "index": blank.get("index", idx + 1),
+                "correct": matched,
+                "expected": blank.get("answer", ""),
+                "student": student_blanks[idx] if idx < len(student_blanks) else "",
+            })
+
+        score = round(correct_count / total, 2) if total else 0
+        all_correct = correct_count == total
+
+        if all_correct:
+            feedback = "所有填空均正确。"
+            suggestion = ""
+        elif correct_count > 0:
+            wrong = [d for d in details if not d["correct"]]
+            wrong_desc = "、".join(f"第{d['index']}空（正确答案：{d['expected']}）" for d in wrong)
+            feedback = f"部分正确，{wrong_desc}填写有误。"
+            suggestion = "建议回顾相关知识点，注意关键术语的准确表述。"
+        else:
+            feedback = "所有填空均不正确。"
+            suggestion = "建议重新阅读相关章节，掌握核心概念与术语。"
+
+        return {
+            "exercise_id": exercise_id,
+            "correct": all_correct,
+            "score": score,
+            "feedback": feedback,
+            "suggestion": suggestion,
+            "knowledge_points": knowledge_points_found,
         }
 
     if exercise_type == "short_answer":
@@ -569,12 +689,11 @@ def grade_exercise(payload: dict) -> dict:
                     "suggestion": suggestion,
                     "matched_points": matched_points or None,
                     "missing_points": missing_points or None,
+                    "knowledge_points": knowledge_points_found,
                 }
 
         if answer_text:
-            # 简单的关键词匹配逻辑（实际应用中应调用模型）
             for p in rubric_points:
-                # 提取评分点中的关键名词/短语
                 if any(kw in answer_text for kw in [p[:4], p[-4:]] if len(kw) > 1):
                     matched_points.append(p)
                 else:
@@ -605,6 +724,7 @@ def grade_exercise(payload: dict) -> dict:
             "suggestion": suggestion,
             "matched_points": matched_points or None,
             "missing_points": missing_points or None,
+            "knowledge_points": knowledge_points_found,
         }
 
     return {
@@ -613,4 +733,5 @@ def grade_exercise(payload: dict) -> dict:
         "score": 0,
         "feedback": "题型不支持，无法评测。",
         "suggestion": "请确认题型后重新提交。",
+        "knowledge_points": knowledge_points_found,
     }

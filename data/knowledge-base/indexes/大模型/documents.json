@@ -1,19 +1,5 @@
 [
   {
-    "id": "doc_b937f848dc3bd315",
-    "name": "超详细的总结！大模型算法岗面试题(含答案)来了！.txt",
-    "doc_type": "txt",
-    "status": "indexed",
-    "created_at": "2026-01-19T07:56:07.205288+00:00"
-  },
-  {
-    "id": "doc_c22d9a36a4b02278",
-    "name": "7-相似度函数篇.pdf",
-    "doc_type": "pdf",
-    "status": "indexed",
-    "created_at": "2026-01-19T09:05:20.721336+00:00"
-  },
-  {
     "id": "doc_c2e8c17e99c4d44b",
     "name": "5-transformers 操作篇.pdf",
     "doc_type": "pdf",
@@ -47,5 +33,40 @@
     "doc_type": "pdf",
     "status": "indexed",
     "created_at": "2026-01-19T09:13:12.280529+00:00"
+  },
+  {
+    "id": "doc_41de1b0a1a421b58",
+    "name": "7-相似度函数篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-03-24T00:13:57.160959+00:00"
+  },
+  {
+    "id": "doc_be0b705968b6dce8",
+    "name": "11-大模型（LLMs）langchain 面.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-03-24T00:18:56.559455+00:00"
+  },
+  {
+    "id": "doc_4d33d5b3915b1e08",
+    "name": "21-RAG（Retrieval-Augmented Generation）评测面.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-03-24T00:20:21.459329+00:00"
+  },
+  {
+    "id": "doc_a516b0b6cd6df38a",
+    "name": "大模型应用开发.txt",
+    "doc_type": "txt",
+    "status": "indexed",
+    "created_at": "2026-03-24T00:28:45.868089+00:00"
+  },
+  {
+    "id": "doc_d98e9abfc3687d5e",
+    "name": "6-LLMs 损失函数篇.pdf",
+    "doc_type": "pdf",
+    "status": "indexed",
+    "created_at": "2026-04-30T00:42:49.188020+00:00"
   }
 ]

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoginPage" class="layout-container">
+  <div v-if="!isFullscreenPage" class="layout-container">
     <!-- Sidebar -->
     <aside class="sidebar">
       <!-- Workspace Switcher (The Attio Way) -->
@@ -83,6 +83,14 @@
               <CheckSquare :size="18" />
               <span>练习评测</span>
             </RouterLink>
+            <RouterLink
+              to="/personalized"
+              class="nav-item"
+              :class="{ active: currentPath === '/personalized' }"
+            >
+              <Target :size="18" />
+              <span>个性化练习</span>
+            </RouterLink>
           </nav>
         </div>
 
@@ -100,6 +108,10 @@
             <RouterLink to="/knowledge-base/search" class="nav-item" :class="{ active: currentPath === '/knowledge-base/search' }">
               <Search :size="18" />
               <span>知识库检索</span>
+            </RouterLink>
+            <RouterLink to="/lesson-outline" class="nav-item" :class="{ active: currentPath === '/lesson-outline' }">
+              <BookMarked :size="18" />
+              <span>讲解提纲</span>
             </RouterLink>
             <RouterLink to="/exercises" class="nav-item" :class="{ active: currentPath === '/exercises' }">
               <ClipboardList :size="18" />
@@ -195,9 +207,11 @@ import {
   Plus, 
   UploadCloud,
   Search,
+  BookMarked,
   MessageSquare,
   ClipboardList,
-  CheckSquare
+  CheckSquare,
+  Target
 } from "lucide-vue-next";
 import { ElMessage } from "element-plus";
 
@@ -205,6 +219,9 @@ const route = useRoute();
 const router = useRouter();
 const session = computed(() => sessionState.value);
 const currentPath = computed(() => route.path);
+const isFullscreenPage = computed(() =>
+  currentPath.value === "/login" || currentPath.value === "/exercises/session"
+);
 const switching = ref(false);
 
 const workspaces = [

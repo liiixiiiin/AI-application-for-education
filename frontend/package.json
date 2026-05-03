@@ -11,7 +11,9 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
     "element-plus": "^2.13.1",
+    "katex": "^0.16.45",
     "lucide-vue-next": "^0.562.0",
+    "marked": "^17.0.5",
     "vue": "^3.5.13",
     "vue-router": "^4.4.5"
   },

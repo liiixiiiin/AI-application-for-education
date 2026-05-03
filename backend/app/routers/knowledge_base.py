@@ -75,15 +75,20 @@ def upload_document_web(
     urls = [item.strip() for item in payload.urls if item and item.strip()]
     if not urls:
         raise HTTPException(status_code=400, detail="url is required")
+    print("[backend] web upload start", {"course_id": course_id, "count": len(urls)})
     uploads = []
     for url in urls:
         try:
+            print("[backend] web parse start", {"course_id": course_id, "url": url})
             uploads.append(extract_web_payload(url, payload.parse_classes))
+            print("[backend] web parse done", {"course_id": course_id, "url": url})
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=str(exc)) from exc
         except Exception as exc:
             raise HTTPException(status_code=500, detail="failed to load web content") from exc
+    print("[backend] web upload store start", {"course_id": course_id, "count": len(uploads)})
     documents = store_uploaded_documents(course_id, uploads, use_llm_chunking=payload.use_llm_chunking)
+    print("[backend] web upload store done", {"course_id": course_id, "count": len(documents)})
     response = [DocumentMetadata(**doc).model_dump() for doc in documents]
     return {"data": response, "meta": {"count": len(response)}}
 

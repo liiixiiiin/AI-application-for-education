@@ -1,0 +1,94 @@
+// Auto-generated from backend/app/db.py — paste into https://dbdiagram.io
+Project teaching_assistant {
+  database_type: "SQLite"
+  Note: '''AI 教学实训智能辅助系统 — 8 张核心业务表（数据闭环：作答 → EMA → 推荐）'''
+}
+
+Table users [headercolor: #4A90E2] {
+  id text [pk]
+  name text [not null]
+  email text [unique, not null]
+  role text [not null]
+  password_hash text [not null]
+  password_salt text [not null]
+  created_at text [not null]
+  Note: '用户账号 / 三角色（teacher / student / admin）'
+}
+
+Table courses [headercolor: #4A90E2] {
+  id text [pk]
+  title text [not null]
+  description text [not null]
+  creator_id text [not null]
+  created_at text [not null]
+  Note: '课程信息 / 基本元数据'
+}
+
+Table sessions [headercolor: #4A90E2] {
+  token text [pk]
+  user_id text [not null]
+  created_at text [not null]
+  Note: '登录会话 / token 管理'
+}
+
+Table knowledge_points [headercolor: #4A90E2] {
+  id text [pk]
+  course_id text [not null]
+  point text [not null]
+  created_at text [not null]
+  Note: '课程知识点（自动 + 手动）'
+}
+
+Table conversations [headercolor: #2E9C6E] {
+  id text [pk]
+  user_id text [not null]
+  course_id text [not null]
+  title text [not null, default: '新对话']
+  created_at text [not null]
+  updated_at text [not null]
+  Note: 'RAG 多轮对话会话'
+}
+
+Table messages [headercolor: #2E9C6E] {
+  id text [pk]
+  conversation_id text [not null]
+  role text [not null]
+  content text [not null]
+  citations text [default: '[]']
+  created_at text [not null]
+  Note: '对话消息（含引用 JSON）'
+}
+
+Table knowledge_mastery [headercolor: #D9822E] {
+  id text [pk]
+  student_id text [not null]
+  course_id text [not null]
+  knowledge_point text [not null]
+  mastery real [not null, default: 0.5]
+  attempt_count integer [not null, default: 0]
+  updated_at text [not null]
+  Note: 'EMA 知识掌握度（知识追踪 ⭐）'
+}
+
+Table exercise_attempts [headercolor: #D9822E] {
+  id text [pk]
+  student_id text [not null]
+  exercise_id text [not null]
+  course_id text [not null]
+  score real [not null]
+  knowledge_points text [not null, default: '[]']
+  created_at text [not null]
+  Note: '学生作答记录（数据闭环 ⭐）'
+}
+
+// =========================== Refs (foreign keys) ===========================
+Ref: courses.creator_id > users.id
+Ref: sessions.user_id > users.id
+Ref: knowledge_points.course_id > courses.id
+Ref: conversations.user_id > users.id
+Ref: conversations.course_id > courses.id
+Ref: messages.conversation_id > conversations.id
+Ref: knowledge_mastery.student_id > users.id
+Ref: knowledge_mastery.course_id > courses.id
+Ref: exercise_attempts.student_id > users.id
+Ref: exercise_attempts.course_id > courses.id

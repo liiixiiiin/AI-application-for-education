@@ -1,0 +1,120 @@
+// Auto-generated from backend/app/db.py
+digraph ER {
+  graph [rankdir="LR", splines="spline", fontname="Helvetica", pad="0.3", nodesep="0.20", ranksep="1.6", bgcolor="white", newrank=true, concentrate=false];
+  node  [shape=plain, fontname="Helvetica"];
+  edge  [fontname="Helvetica", fontsize=10, color="#555555"];
+
+  users [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E3F2FD">
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white"><B>users</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">用户账号 / 三角色（teacher / student / admin）</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="name"><B>name</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="email"><B>email</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#6A1B9A"><B>U</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="role"><B>role</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="password_hash"><B>password_hash</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="password_salt"><B>password_salt</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  courses [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E3F2FD">
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white"><B>courses</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">课程信息 / 基本元数据</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="title"><B>title</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="description"><B>description</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="creator_id"><B>creator_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  sessions [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E3F2FD">
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white"><B>sessions</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">登录会话 / token 管理</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="token"><B>token</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="user_id"><B>user_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  knowledge_points [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E3F2FD">
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white"><B>knowledge_points</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#4A90E2" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">课程知识点（自动 + 手动）</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="course_id"><B>course_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="point"><B>point</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  conversations [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E8F5E9">
+    <TR><TD BGCOLOR="#2E9C6E" COLSPAN="2"><FONT COLOR="white"><B>conversations</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#2E9C6E" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">RAG 多轮对话会话</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="user_id"><B>user_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="course_id"><B>course_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="title"><B>title</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="updated_at"><B>updated_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  messages [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#E8F5E9">
+    <TR><TD BGCOLOR="#2E9C6E" COLSPAN="2"><FONT COLOR="white"><B>messages</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#2E9C6E" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">对话消息（含引用 JSON）</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="conversation_id"><B>conversation_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="role"><B>role</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="content"><B>content</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="citations"><B>citations</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  knowledge_mastery [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF3E0">
+    <TR><TD BGCOLOR="#D9822E" COLSPAN="2"><FONT COLOR="white"><B>knowledge_mastery</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#D9822E" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">EMA 知识掌握度（知识追踪 ⭐）</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="student_id"><B>student_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="course_id"><B>course_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="knowledge_point"><B>knowledge_point</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="mastery"><B>mastery</B>  <FONT POINT-SIZE="9" COLOR="#666666">real</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="attempt_count"><B>attempt_count</B>  <FONT POINT-SIZE="9" COLOR="#666666">integer</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="updated_at"><B>updated_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" COLSPAN="2"><FONT POINT-SIZE="9" COLOR="#6A1B9A">UNIQUE (student_id, course_id, knowledge_point)</FONT></TD></TR>
+  </TABLE>
+>];
+
+  exercise_attempts [label=<
+  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF3E0">
+    <TR><TD BGCOLOR="#D9822E" COLSPAN="2"><FONT COLOR="white"><B>exercise_attempts</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#D9822E" COLSPAN="2"><FONT COLOR="white" POINT-SIZE="9">学生作答记录（数据闭环 ⭐）</FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="id"><B>id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#C62828"><B>PK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="student_id"><B>student_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="exercise_id"><B>exercise_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="course_id"><B>course_id</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"><FONT COLOR="#1565C0"><B>FK</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="score"><B>score</B>  <FONT POINT-SIZE="9" COLOR="#666666">real</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="knowledge_points"><B>knowledge_points</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+    <TR><TD ALIGN="LEFT" PORT="created_at"><B>created_at</B>  <FONT POINT-SIZE="9" COLOR="#666666">text</FONT></TD><TD ALIGN="RIGHT"> </TD></TR>
+  </TABLE>
+>];
+
+  // Relationships (FK -> referenced table)
+  courses:creator_id -> users:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  sessions:user_id -> users:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  knowledge_points:course_id -> courses:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  conversations:user_id -> users:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  conversations:course_id -> courses:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  messages:conversation_id -> conversations:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  knowledge_mastery:student_id -> users:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  knowledge_mastery:course_id -> courses:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  exercise_attempts:student_id -> users:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+  exercise_attempts:course_id -> courses:id [arrowhead=crow, arrowtail=none, dir=both, taillabel="N", headlabel="1", labeldistance=2.0];
+}

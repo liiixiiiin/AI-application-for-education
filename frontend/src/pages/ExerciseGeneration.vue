@@ -34,6 +34,7 @@
               <el-checkbox-group v-model="selectedTypes">
                 <el-checkbox label="single_choice">单选题</el-checkbox>
                 <el-checkbox label="true_false">判断题</el-checkbox>
+                <el-checkbox label="fill_in_blank">填空题</el-checkbox>
                 <el-checkbox label="short_answer">简答题</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
@@ -140,6 +141,26 @@
                 </div>
               </div>
 
+              <div v-if="exercise.type === 'fill_in_blank' && exercise.blanks?.length" class="exercise-blanks mt-4">
+                <div class="answer-title">填空答案</div>
+                <div v-for="(blank, bIdx) in exercise.blanks" :key="bIdx" class="blank-edit-row">
+                  <span class="blank-label">第 {{ blank.index }} 空</span>
+                  <el-input
+                    v-model="exercises[index].blanks[bIdx].answer"
+                    size="small"
+                    placeholder="标准答案"
+                    style="flex: 1"
+                  />
+                  <el-input
+                    :model-value="(exercises[index].blanks[bIdx].alternatives || []).join(', ')"
+                    @update:model-value="val => exercises[index].blanks[bIdx].alternatives = val.split(',').map(s => s.trim()).filter(Boolean)"
+                    size="small"
+                    placeholder="替代答案（逗号分隔）"
+                    style="flex: 1"
+                  />
+                </div>
+              </div>
+
               <div class="exercise-answer mt-4">
                 <div class="answer-title">标准答案</div>
                 <el-input
@@ -165,6 +186,9 @@
                   <el-option label="C" value="C" />
                   <el-option label="D" value="D" />
                 </el-select>
+                <div v-else-if="exercise.type === 'fill_in_blank'" class="answer-text">
+                  {{ (exercise.blanks || []).map(b => `第${b.index}空：${b.answer}`).join('；') }}
+                </div>
               </div>
 
               <div v-if="exercise.rubric?.length" class="exercise-rubric mt-4">
@@ -273,7 +297,7 @@ import { apiRequest } from "../services/api";
 const courses = ref([]);
 const loadingCourses = ref(false);
 const selectedCourse = ref("");
-const selectedTypes = ref(["single_choice", "true_false", "short_answer"]);
+const selectedTypes = ref(["single_choice", "true_false", "fill_in_blank", "short_answer"]);
 const difficulty = ref("easy");
 const count = ref(10);
 const knowledgeScope = ref([]);
@@ -468,7 +492,7 @@ const formatDate = (value) => {
 };
 
 const resetForm = () => {
-  selectedTypes.value = ["single_choice", "true_false", "short_answer"];
+  selectedTypes.value = ["single_choice", "true_false", "fill_in_blank", "short_answer"];
   difficulty.value = "easy";
   count.value = 10;
   knowledgeScope.value = [];
@@ -480,6 +504,7 @@ const typeLabel = (type) => {
   const map = {
     single_choice: "单选题",
     true_false: "判断题",
+    fill_in_blank: "填空题",
     short_answer: "简答题",
   };
   return map[type] || type;
@@ -578,6 +603,26 @@ onMounted(loadCourses);
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
+}
+
+.exercise-blanks {
+  padding: 12px;
+  border-radius: 10px;
+  background: #f0fdf4;
+}
+
+.blank-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.blank-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
 }
 
 .ml-2 {

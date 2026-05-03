@@ -39,7 +39,19 @@
 }
 ```
 
-### 1.4 简答题（short_answer）
+### 1.4 填空题（fill_in_blank）
+```
+{
+  "type": "fill_in_blank",
+  "question": "在关系数据库中，____用于唯一标识表中的每一条记录。",
+  "blanks": [
+    {"index": 1, "answer": "主键", "alternatives": ["primary key", "主码"]}
+  ],
+  "analysis": "主键（Primary Key）是关系数据库中用于唯一标识记录的字段或字段组合。"
+}
+```
+
+### 1.5 简答题（short_answer）
 ```
 {
   "type": "short_answer",
@@ -58,7 +70,7 @@
 {
   "course_id": "course_001",
   "count": 5,
-  "types": ["single_choice", "true_false", "short_answer"],
+  "types": ["single_choice", "true_false", "fill_in_blank", "short_answer"],
   "difficulty": "easy",
   "knowledge_scope": ["主键", "外键"]
 }
@@ -91,4 +103,11 @@
 ## 3. 生成约束
 - 题目必须来自检索到的知识点，`source_chunks` 必填。
 - 简答题必须包含评分标准 `rubric`。
+- 填空题必须包含 `blanks` 数组，每个空位含标准答案与可接受的替代答案。
 - 每题均需提供答案与简要解析。
+
+## 4. 生成策略（Few-shot Prompting）
+- 系统预置不同难度（简单/中等/困难）的示例题目，教师指定难度后自动嵌入 Prompt。
+- Prompt 中补充显式约束指令（如"选项应具有合理干扰性"、"参考答案应包含关键得分点"）。
+- 采用结构化输出（JSON Schema）约束生成格式，确保下游程序可直接解析。
+- 支持基于选中知识点定向出题，检索范围限定在相关知识点的知识库片段中。

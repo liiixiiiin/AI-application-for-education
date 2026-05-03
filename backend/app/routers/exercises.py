@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from ..auth import require_teacher, require_user
@@ -20,6 +22,9 @@ from ..services.exercises import (
     update_exercise_batch, 
     delete_exercise_batch
 )
+from ..services.knowledge_tracking import record_attempt
+
+logger = logging.getLogger(__name__)
 
 
 router = APIRouter(prefix="/api/v1/courses", tags=["exercises"])
@@ -51,7 +56,6 @@ def save_course_exercise_batch(
     payload: ExerciseBatchSaveRequest,
     user: dict = Depends(require_user),
 ) -> dict:
-    require_teacher(user)
     batch = save_exercise_batch(
         course_id=course_id,
         exercises=[ex.model_dump() for ex in payload.exercises],
@@ -119,9 +123,22 @@ def grade_course_exercise(
     payload: ExerciseGradingRequest,
     user: dict = Depends(require_user),
 ) -> dict:
-    _ = user
     if payload.course_id != course_id:
         raise HTTPException(status_code=400, detail="course_id mismatch")
     result = grade_exercise(payload.model_dump())
+
+    kps = result.get("knowledge_points") or []
+    if kps and user.get("id"):
+        try:
+            record_attempt(
+                student_id=user["id"],
+                exercise_id=payload.exercise_id,
+                course_id=course_id,
+                score=result.get("score", 0),
+                knowledge_points=kps,
+            )
+        except Exception:
+            logger.warning("Failed to record attempt for knowledge tracking", exc_info=True)
+
     response = ExerciseGradingResponse(**result)
     return {"data": response.model_dump(), "meta": {"graded": True}}

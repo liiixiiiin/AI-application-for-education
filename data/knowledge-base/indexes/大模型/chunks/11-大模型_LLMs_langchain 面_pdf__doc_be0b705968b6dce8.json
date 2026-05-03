@@ -1,0 +1,189 @@
+[
+  {
+    "chunk_id": "chunk_d2690394b37b359e",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 1. 什么是 LangChain? > 片段 1",
+    "content": "LangChain 是一个强大的框架,旨在帮助开发人员使用语言模型构建端到端的应用程序。它提供了一套工具、组件和接口,可简化创建由大型语言模型(LLM)和聊天模型提供支持的应用程序的过程。LangChain 可以轻松管理与语言模型的交互,将多个组件链接在一起,并集成额外的资源,例如 API 和数据库。",
+    "order_index": 1,
+    "char_count": 151
+  },
+  {
+    "chunk_id": "chunk_b2e90b85bc6c8832",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.1 Components and Chains > 片段 2",
+    "content": "• Component:模块化的构建块,可以组合起来创建强大的应用程序;• Chain:组合在一起以完成特定任务的一系列 Components(或其他 Chain);注:一个 Chain 可能包括一个 Prompt 模板、一个语言模型和一个输出解析器,它们一起工作以处理用户输入、生成响应并处理输出。",
+    "order_index": 2,
+    "char_count": 150
+  },
+  {
+    "chunk_id": "chunk_e40dc65bb2ea0cc2",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.2 PromptTemplates and Values > 片段 3",
+    "content": "• PromptTemplate 作用:负责创建 PromptValue,这是最终传递给语言模型的内容;• PromptTemplate 特点:有助于将用户输入和其他动态信息转换为适合语言模型的格式;PromptValues 是具有方法的类,这些方法可以转换为每个模型类型期望的确切输入类型(如文本或聊天消息)。",
+    "order_index": 3,
+    "char_count": 156
+  },
+  {
+    "chunk_id": "chunk_f194f145c0286cf0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.3 ExampleSelectors > 片段 4",
+    "content": "• 作用:当您想要在 Prompts 中动态包含示例时,ExampleSelectors 很有用;它们接受用户输入并返回一个示例列表以在提示中使用,使其更强大和特定于上下文。",
+    "order_index": 4,
+    "char_count": 87
+  },
+  {
+    "chunk_id": "chunk_dc62fd8cde0b3dc4",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.4 OutputParsers > 片段 5",
+    "content": "• 作用:负责将语言模型响应构建为更有用的格式;• 实现方法:一种用于提供格式化指令,另一种用于将语言模型的响应解析为结构化格式;• 特点:使得在您的应用程序中处理输出数据变得更加容易。",
+    "order_index": 5,
+    "char_count": 93
+  },
+  {
+    "chunk_id": "chunk_8c1c774e151b89c5",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.5 Indexes and Retrievers > 片段 6",
+    "content": "Index:一种组织文档的方式,使语言模型更容易与它们交互;Retrievers:用于获取相关文档并将它们与语言模型组合的接口;注:LangChain 提供了用于处理不同类型的索引和检索器的工具和功能,例如矢量数据库和文本拆分器。",
+    "order_index": 6,
+    "char_count": 115
+  },
+  {
+    "chunk_id": "chunk_33ad552a013864e8",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.6 ChatMessageHistory > 片段 7",
+    "content": "• ChatMessageHistory 作用:负责记住所有以前的聊天交互数据,然后可以将这些交互数据传递回模型、汇总或以其他方式组合;• 优点:有助于维护上下文并提高模型对对话的理解。",
+    "order_index": 7,
+    "char_count": 93
+  },
+  {
+    "chunk_id": "chunk_20aa425c9f137bd4",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 2. LangChain 包含哪些核心概念? > 2.7 Agents and Toolkits > 片段 8",
+    "content": "• Agent:在 LangChain 中推动决策制定的实体,可以访问一套工具,并可根据用户输入决定调用哪个工具;• Toolkits:一组工具,当它们一起使用时,可以完成特定的任务;代理执行器负责使用适当的工具运行代理。",
+    "order_index": 8,
+    "char_count": 111
+  },
+  {
+    "chunk_id": "chunk_bc77e064caf452a9",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 3. 什么是 LangChain Agent? > 片段 9",
+    "content": "LangChain Agent 是框架中驱动决策制定的实体。它可以访问一组工具,并可以根据用户的输入决定调用哪个工具;优点:帮助构建复杂的应用程序,这些应用程序需要自适应和特定于上下文的响应。当存在取决于用户输入和其他因素的未知交互链时,它们特别有用。",
+    "order_index": 9,
+    "char_count": 126
+  },
+  {
+    "chunk_id": "chunk_c77dffd7b4268f3c",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 4. 如何使用 LangChain ? > 片段 10",
+    "content": "要使用 LangChain,开发人员首先要导入必要的组件和工具,例如 LLMs、chatmodels、agents、chains、内存功能。这些组件组合起来创建一个可以理解、处理和响应用户输入的应用程序。LangChain 支持六大领域:LLM 和提示、链(Chain)、数据增强生成、Agents、内存、评估。",
+    "order_index": 10,
+    "char_count": 156
+  },
+  {
+    "chunk_id": "chunk_99642f5626d606be",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 6. 什么是 LangChain model? > 片段 11",
+    "content": "LangChain model 是一种抽象,表示框架中使用的不同类型的模型。主要分为三类:1. LLM(大型语言模型):将文本字符串作为输入并返回文本字符串作为输出;2. 聊天模型(ChatModel):将聊天消息列表作为输入并返回聊天消息,便于管理对话历史;3. 文本嵌入模型(TextEmbeddingModels):将文本转为浮点嵌入向量,用于检索、聚类等。",
+    "order_index": 11,
+    "char_count": 182
+  },
+  {
+    "chunk_id": "chunk_9c3acff07ec34c7e",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 7. LangChain 包含哪些特点 ? > 片段 12",
+    "content": "LangChain 旨在为六个主要领域的开发人员提供支持:1. LLM 和提示:简化提示管理与通用接口;2. 链(Chain):提供标准接口与工具集成;3. 数据增强生成:支持与外部数据源交互;4. Agents:让 LLM 决策、行动、观察并迭代;5. 内存:标准内存接口及多种实现;6. 评估:提供基于 LLM 的提示/链式评估方案。",
+    "order_index": 12,
+    "char_count": 169
+  },
+  {
+    "chunk_id": "chunk_4dfde43e206d5de0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 8.1 LangChain 如何调用 LLMs 生成回复? > 片段 13",
+    "content": "Models 指各类训练好的大语言模型(如 chatgpt、chatglm、vicuna 等)。示例:使用 OpenAI 接口——from langchain.llms import OpenAI; llm = OpenAI(model_name=\"text-davinci-003\"); response = llm(\"你好\")。也可封装 chatGLM:基于 transformers 加载 tokenizer 与 model,实现 __call__ 方法调用 chat 接口。",
+    "order_index": 13,
+    "char_count": 241
+  },
+  {
+    "chunk_id": "chunk_44a354b179d53e5a",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 8.2 LangChain 如何修改提示模板? > 片段 14",
+    "content": "langchain.PromptTemplate 根据下游任务设计 prompt 模板并填入内容。示例:template = \"Explain the concept of {concept} in couple of lines\"; prompt = PromptTemplate(input_variables=[\"concept\"], template=template).format(concept=\"regularization\")。目的:通过精准提示词引导大模型输出更合理内容。",
+    "order_index": 14,
+    "char_count": 246
+  },
+  {
+    "chunk_id": "chunk_bafd89e7555b1e46",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 8.3 LangChain 如何链接多个组件处理一个特定的下游任务? > 片段 15",
+    "content": "通过 Chain 组合组件。示例:from langchain.chains import LLMChain; chain = LLMChain(llm=openAI(), prompt=promptTem); chain.run(\"你好\")。若模型不兼容(如 chatGLM),可自定义 DemoChain 类:初始化时传入 llm 与 prompt,run 方法中 format 后调用 llm,实现灵活链式调用逻辑。",
+    "order_index": 15,
+    "char_count": 211
+  },
+  {
+    "chunk_id": "chunk_8a33159b378843c7",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > 8.4 LangChain 如何 Embedding & vectorstore ? > 片段 16",
+    "content": "Embedding 是将文本编码为高维向量的过程。典型流程:1)选择 embedding 模型(如 OpenAIEmbeddings 或 HuggingFaceEmbeddings);2)文本切分(如 RecursiveCharacterTextSplitter);3)向量化入库(如 Pinecone 或 FAISS);4)相似性检索(similarity_search)。本地知识库 QA 即基于此流程构建。",
+    "order_index": 16,
+    "char_count": 206
+  },
+  {
+    "chunk_id": "chunk_04986fc00b456cfa",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_be0b705968b6dce8",
+    "source_doc_name": "11-大模型（LLMs）langchain 面.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "11-大模型（LLMs）langchain 面.pdf > LangChain 存在哪些问题及方法方案? > 片段 17",
+    "content": "1. 低效令牌使用:Tiktoken 库可替代 LangChain 内置计数;2. 文档问题:不充分、不准确、404 多,源于快速迭代导致文档滞后;3. 概念混淆:过多‘helper’函数(实为标准 Python 封装),增加学习成本;4. 行为不一致:如 ConversationRetrievalChain 自动重写问题,破坏上下文自然性;5. 缺乏标准互操作数据类型。\n\n• LlamaIndex:专为连接 LLM 与自定义数据源设计的数据框架,支持存储、查询、索引及可视化分析;• Deepset Haystack:基于 HuggingFace Transformers 的开源框架,专注搜索与问答应用,提供丰富文本理解与查询工具。二者均强调易用性、可扩展性与活跃生态,是 LangChain 的有力补充或替代选项。",
+    "order_index": 17,
+    "char_count": 362
+  }
+]

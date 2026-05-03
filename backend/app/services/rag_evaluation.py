@@ -12,7 +12,7 @@ from ragas.metrics import (
 
 from .knowledge_base import get_course_title, search_documents
 from .langchain_client import get_chat_model, get_embeddings, is_dashscope_configured
-from .rag_qa import build_answer_from_results
+from .rag_utils import build_answer_from_results
 
 _METRIC_REGISTRY = {
     "faithfulness": faithfulness,
@@ -101,12 +101,15 @@ def evaluate_rag_response(
         answer_override=answer,
     )
     contexts = payload["contexts"]
+    citations = payload["citations"]
+    final_answer = payload["answer"]
+
     if not contexts:
         raise ValueError("No contexts found for evaluation.")
 
     dataset_payload: dict[str, list[Any]] = {
         "question": [question],
-        "answer": [payload["answer"]],
+        "answer": [final_answer],
         "contexts": [contexts],
     }
     if ground_truth is not None:
@@ -115,12 +118,16 @@ def evaluate_rag_response(
     dataset = Dataset.from_dict(dataset_payload)
     metric_objects = _select_metrics(metrics, ground_truth is not None)
     result = evaluate(dataset, metrics=metric_objects, llm=llm, embeddings=embeddings)
-    scores = _result_to_dict(result)
+    raw_scores = _result_to_dict(result)
+    metric_names = [metric.name for metric in metric_objects]
+    scores: dict[str, float | None] = {}
+    for name in metric_names:
+        scores[name] = raw_scores.get(name)
 
     return {
-        "answer": payload["answer"],
+        "answer": final_answer,
         "contexts": contexts,
-        "citations": payload["citations"],
+        "citations": citations,
         "scores": scores,
-        "metrics": [metric.name for metric in metric_objects],
+        "metrics": metric_names,
     }

@@ -1,0 +1,101 @@
+[
+  {
+    "chunk_id": "chunk_e3228a840ea486f0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 一、介绍一下 KL 散度? > 片段 1",
+    "content": "KL(Kullback-Leibler)散度衡量两个概率分布之间的差异,公式为 D_KL(P||Q) = Σ p(x) log(p(x)/q(x))。它是非对称的相对熵,值恒≥0;当P=Q时取0。KL散度反映用分布Q近似真实分布P时所损失的信息量,在LLMs中常用于知识蒸馏、RLHF奖励建模等场景。其不对称性意味着D_KL(P||Q) ≠ D_KL(Q||P),物理上体现为‘编码成本差异’。",
+    "order_index": 1,
+    "char_count": 197
+  },
+  {
+    "chunk_id": "chunk_58d222159e39f212",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 二、交叉熵损失函数写一下,物理意义是什么? > 片段 2",
+    "content": "交叉熵损失函数公式为 H(p,q) = −Σ p_i log q_i,其中p为真实标签分布(one-hot),q为模型预测概率分布,N为样本数。物理意义是:衡量真实分布p与预测分布q之间的‘信息差’——即用q编码p所需额外的平均比特数。当p=q时,H(p,q)=H(p)(即真实分布的熵),损失最小;差异越大,损失越高。该性质使其天然适配分类任务的概率建模目标。",
+    "order_index": 2,
+    "char_count": 181
+  },
+  {
+    "chunk_id": "chunk_d77d7666619aef92",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 三、KL 散度与交叉熵的区别? > 片段 3",
+    "content": "KL散度D_KL(p||q) = H(p,q) − H(p),即交叉熵减去真实分布的熵。区别在于:1 KL散度是非对称且非负的,而交叉熵无此约束;2 交叉熵直接衡量预测代价,KL散度侧重于分布近似质量;3 在监督训练中,因H(p)为常数(标签固定),最小化交叉熵等价于最小化KL散度,故二者常可互换使用,但KL更强调分布匹配本质。",
+    "order_index": 3,
+    "char_count": 165
+  },
+  {
+    "chunk_id": "chunk_2b0a7c18f776795b",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 四、多任务学习各 loss 差异过大怎样处理? > 片段 4",
+    "content": "多任务学习中若各任务loss量级差异大(如分类loss≈0.1,回归loss≈100),会导致梯度淹没或优化失衡。常用方法包括:动态加权(GradNorm、Uncertainty Weighting)、任务损失归一化(per-task standardization)、梯度裁剪/重标度、引入共享-私有架构隔离干扰,或采用多任务损失平衡器(MTLB)。核心目标是使各任务梯度范数趋近,保障联合训练稳定性与收敛性。",
+    "order_index": 4,
+    "char_count": 206
+  },
+  {
+    "chunk_id": "chunk_ecc236908f46ecf0",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 五、分类问题为什么用交叉熵损失函数不用均方误差(MSE)? > 片段 5",
+    "content": "分类问题输出为概率分布,交叉熵直接建模分布差异,对logit微小变化敏感,梯度为(q_i−p_i),数值稳定且利于softmax后优化;而MSE梯度为2(q_i−p_i)q_i(1−q_i),在饱和区(q_i→0/1)梯度消失,且未利用概率语义,无法反映信息不确定性。此外,交叉熵与最大似然估计一致,具有理论最优性,MSE则隐含高斯假设,不适用于离散类别建模。",
+    "order_index": 5,
+    "char_count": 180
+  },
+  {
+    "chunk_id": "chunk_b359e9ff4e3e4596",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 六、什么是信息增益? > 片段 6",
+    "content": "信息增益(Information Gain)是决策树中选择最优分裂特征的核心指标,定义为IG(T,a) = H(T) − H(T|a),即父节点熵减去按特征a划分后的加权条件熵。它量化了引入特征a后样本纯度的提升程度:IG越大,子节点越纯净(同类样本越集中)。该指标基于信息论,确保每次分裂最大程度降低不确定性,从而构建泛化能力强的树结构。",
+    "order_index": 6,
+    "char_count": 170
+  },
+  {
+    "chunk_id": "chunk_6fb6aa0f8c181086",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 七、多分类的分类损失函数 (Softmax) ? > 片段 7",
+    "content": "多分类采用Softmax交叉熵损失:L = −∑_{i=1}^n y_i log(σ(z)_i),其中y_i为one-hot标签,σ(z)_i = exp(z_i)/∑_j exp(z_j)为Softmax输出概率。该损失将原始logits z映射为概率分布,并惩罚预测与真实标签的偏差。相比单独使用Softmax或交叉熵,二者结合构成端到端可导的分类目标,兼具数值稳定性(经防溢出处理)和统计一致性(等价于极大似然)。",
+    "order_index": 7,
+    "char_count": 210
+  },
+  {
+    "chunk_id": "chunk_b8eca67251104dda",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 八、softmax 和交叉熵损失怎么计算,二值交叉熵呢? > 片段 8",
+    "content": "Softmax计算:σ(z)_i = exp(z_i − max(z)) / ∑_j exp(z_j − max(z))(防溢出);多分类交叉熵:L = −∑ y_i log σ(z)_i;二值交叉熵(BCE)用于单标签二分类:L = −[y log(σ(z)) + (1−y) log(1−σ(z))],其中σ为sigmoid。BCE是Softmax在n=2时的特例,二者统一于交叉熵框架,仅激活函数与标签形式不同。",
+    "order_index": 8,
+    "char_count": 209
+  },
+  {
+    "chunk_id": "chunk_1e7867143f5175d3",
+    "course_id": "course_9ff5901482019ab3",
+    "source_doc_id": "doc_d98e9abfc3687d5e",
+    "source_doc_name": "6-LLMs 损失函数篇.pdf",
+    "source_doc_type": "pdf",
+    "title_path": "6-LLMs 损失函数篇.pdf > 九、如果 softmax 的 e 次方超过 float 的值了怎么办? > 片段 9",
+    "content": "Softmax易因logits过大导致exp(z_i)上溢(inf)。标准解法是logits中心化:令z'_i = z_i − max(z),再计算σ(z)_i = exp(z'_i) / ∑_j exp(z'_j)。因max(z'_i)=0,所有exp(z'_i)∈(0,1],彻底规避上溢;且数学等价(分子分母同乘exp(−max(z)))。该技巧被PyTorch/TensorFlow等框架默认集成,是LLMs训练稳定性基础保障。",
+    "order_index": 9,
+    "char_count": 218
+  }
+]

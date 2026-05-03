@@ -27,18 +27,29 @@ def get_chat_model() -> Any:
     if not is_dashscope_configured():
         return None
 
+    ChatTongyi = None
     try:
-        from langchain_community.chat_models import ChatTongyi
+        from langchain_community.chat_models import ChatTongyi  # type: ignore[no-redef]
     except Exception:
-        from langchain_community.chat_models import ChatDashScope as ChatTongyi
+        try:
+            from langchain_community.chat_models import (  # type: ignore[no-redef]
+                ChatDashScope as ChatTongyi,
+            )
+        except Exception:
+            return None
+    if ChatTongyi is None:
+        return None
 
     model = os.getenv("DASHSCOPE_CHAT_MODEL", "qwen-plus").strip() or "qwen-plus"
     temperature = float(os.getenv("DASHSCOPE_TEMPERATURE", "0.3"))
-    return ChatTongyi(
-        model=model,
-        temperature=temperature,
-        dashscope_api_key=_get_dashscope_key(),
-    )
+    try:
+        return ChatTongyi(
+            model=model,
+            temperature=temperature,
+            dashscope_api_key=_get_dashscope_key(),
+        )
+    except Exception:
+        return None
 
 
 @lru_cache

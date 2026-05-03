@@ -1,0 +1,291 @@
+{
+  "batch_id": "batch_fe1ad08128129c05",
+  "course_id": "course_9ff5901482019ab3",
+  "title": "练习批次 2026/3/25 23:09:37",
+  "created_at": "2026-03-25T15:09:39.084055+00:00",
+  "exercises": [
+    {
+      "exercise_id": "ex_13c302f184ba1f96",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "在 Transformer 架构中，前馈神经网络（FFN）块的标准计算公式是？",
+      "knowledge_points": [
+        "前馈神经网络"
+      ],
+      "source_chunks": [
+        "chunk_96d688b38d1f51ef"
+      ],
+      "difficulty": "medium",
+      "options": [
+        {
+          "key": "A",
+          "text": "FFN(x) = activation(W1 * x + b1) + W2 * x + b2"
+        },
+        {
+          "key": "B",
+          "text": "FFN(x) = W2 * (W1 * x + b1) + b2"
+        },
+        {
+          "key": "C",
+          "text": "FFN(x) = W2 * activation(W1 * x + b1) + b2"
+        },
+        {
+          "key": "D",
+          "text": "FFN(x) = activation(W1 * x) + activation(W2 * x)"
+        }
+      ],
+      "answer": "C",
+      "analysis": "根据资料[1]，FFN 块由两个线性变换和一个非线性激活函数组成，标准形式为 FFN(x) = W2 * activation(W1 * x + b1) + b2，其中 activation 通常为 ReLU 或 GeLU；选项 C 完全匹配该定义。选项 A 错误地将 W2 * x 作为独立项加入；选项 B 缺失激活函数，不符合 FFN 的非线性特性；选项 D 结构错误，未体现两层线性变换与中间激活的嵌套关系。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_1c3609f36cf041a4",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "Swish 激活函数的定义为 Swish(x) = x * σ(βx)，其中 σ 表示 Sigmoid 函数，β 是可学习参数或常取为 1；当 β=1 时，Swish(x) = x * sigmoid(x)。",
+      "knowledge_points": [
+        "激活函数"
+      ],
+      "source_chunks": [
+        "chunk_76008c8ed03f39c8"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": true,
+      "analysis": "根据资料[1]，Swish 函数明确定义为 Swish(x) = x * σ(βx)，σ 是 Sigmoid 函数，β 可设为可学习参数或固定为 1；当 β=1 时即简化为 x * sigmoid(x)，描述完全一致。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_5cbc556648669e68",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "fill_in_blank",
+      "question": "在 Transformer 架构的前馈神经网络（FFN）块中，最常用的激活函数是 ____，其数学定义为 max(0, x)。",
+      "knowledge_points": [
+        "ReLU"
+      ],
+      "source_chunks": [
+        "chunk_96d688b38d1f51ef"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": null,
+      "analysis": "题干明确指出 FFN 块中 'activation 通常是 ReLU 或 GeLU'，并给出定义 'max(0, x)'，这正是 ReLU 的标准数学表达。'ReLU' 是该知识点的核心专有名词，其全称和大小写变体属于合理替代答案；而 'GeLU'、'Swish' 等虽同为激活函数，但不符合 '最常用' 和 'max(0, x)' 的双重限定。",
+      "rubric": null,
+      "blanks": [
+        {
+          "index": 1,
+          "answer": "ReLU",
+          "alternatives": [
+            "Rectified Linear Unit",
+            "rectified linear unit"
+          ]
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_e60c6bb638177af7",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "请写出 GeLU 激活函数的精确数学定义及其常用近似计算公式，并简要说明其在大语言模型（如 BERT、GPT）中被广泛采用的主要优势。",
+      "knowledge_points": [
+        "GeLU"
+      ],
+      "source_chunks": [
+        "chunk_5c289f90d267452c"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": "GeLU 的精确数学定义为：GeLU(x) = x · Φ(x)，其中 Φ(x) 是标准正态分布的累积分布函数，即 Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt。常用近似公式为：GeLU(x) ≈ 0.5x · [1 + tanh(√(2/π) · (x + 0.044715 · x³))]。其主要优势在于：① 光滑、非单调且具有概率解释（建模神经元激活的随机性）；② 相比 ReLU 更好地保留负值信息，缓解‘死区’问题；③ 在 BERT、GPT 等模型中实证表现出更优的收敛性与泛化能力。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "准确写出精确定义 GeLU(x) = x · Φ(x)，并指出 Φ(x) 是标准正态 CDF",
+          "score": 1.0
+        },
+        {
+          "point": "正确写出常用近似公式（含系数 √(2/π) 和三次项 0.044715·x³）",
+          "score": 1.0
+        },
+        {
+          "point": "说明至少两个合理优势（如：光滑性、概率解释、缓解死区、实证性能优等）",
+          "score": 1.0
+        }
+      ],
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_1a46d0d6718d6233",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "关于 Swish 激活函数，以下哪项描述是正确的？",
+      "knowledge_points": [
+        "Swish"
+      ],
+      "source_chunks": [
+        "chunk_76008c8ed03f39c8"
+      ],
+      "difficulty": "medium",
+      "options": [
+        {
+          "key": "A",
+          "text": "Swish是固定不变的规则。"
+        },
+        {
+          "key": "B",
+          "text": "Swish用于定义核心概念或约束。"
+        },
+        {
+          "key": "C",
+          "text": "Swish仅用于性能优化。"
+        },
+        {
+          "key": "D",
+          "text": "Swish与课程无直接关系。"
+        }
+      ],
+      "answer": "B",
+      "analysis": "选项 B 正确：根据资料，Swish 定义为 Swish(x) = x * σ(βx)，其中 σ 是 Sigmoid 函数，β 可设为可学习参数或固定为 1（如 β=1 时即为 x * sigmoid(x)）。选项 A 错误：公式错误，且 Swish 是平滑函数；选项 C 错误：Swish 是非单调函数（在 x≈−5 处存在局部极小值），且其导数不恒为正；选项 D 错误：资料仅指出 Swish ‘在某些深度网络中表现优于 ReLU’，并被用于‘部分先进语言模型’，并非普适最优或默认选择。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_f99838d393673569",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "LoRA适配器在微调时仅修改模型的注意力层中的Query和Value投影矩阵，而不影响Key和Output投影矩阵。",
+      "knowledge_points": [
+        "LoRA适配器"
+      ],
+      "source_chunks": [
+        "chunk_f167f25dd2c5dc38"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": false,
+      "analysis": "LoRA（Low-Rank Adaptation）通常对权重矩阵（如全连接层）进行低秩分解，常见于Transformer的注意力模块中Q、K、V、O四个投影矩阵，以及前馈网络（FFN）中的两个线性层。实际实现中（如Hugging Face PEFT），LoRA默认会对所有目标模块（如'q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj'等）应用，具体取决于配置的target_modules参数，并非仅限于Q和V。因此，该说法错误。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_dce684bf0cc1c714",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "fill_in_blank",
+      "question": "P-tuning是一种针对大语言模型的参数高效微调方法，其核心思想是通过引入可学习的____来替代传统手工设计的Prompt，从而在不更新模型原始参数的前提下提升下游任务性能。",
+      "knowledge_points": [
+        "P-tuning"
+      ],
+      "source_chunks": [
+        "chunk_2971cc5e3baea292"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": null,
+      "analysis": "P-tuning的核心创新在于用可学习的连续向量（后发展为离散化优化）替代人工编写的固定Prompt；但根据主流定义与原始论文（Liu et al., 2021），P-tuning v1 使用连续向量，而 P-tuning v2 明确采用可训练的离散提示词（learnable discrete prompt tokens）作为关键组件，题干中‘替代传统手工设计的Prompt’及‘不更新模型原始参数’指向该可学习、离散、嵌入式提示结构。常见混淆项如‘前缀’‘软提示’虽相关，但标准术语应为‘离散提示词’或等价表述。",
+      "rubric": null,
+      "blanks": [
+        {
+          "index": 1,
+          "answer": "离散提示词",
+          "alternatives": [
+            "离散Prompt",
+            "离散token",
+            "离散提示",
+            "prompt tokens",
+            "soft prompt"
+          ]
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_c30cd3611d421d38",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "P-tuning v2 是一种针对大语言模型的参数高效微调方法，请简述其核心思想，并说明它相较于 P-tuning v1 的主要改进点。",
+      "knowledge_points": [
+        "P-tuning v2"
+      ],
+      "source_chunks": [
+        "chunk_1200210b465d7d1b"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": "P-tuning v2 的核心思想是将可学习的连续提示（prompt）以多层前缀（prefix）形式插入 Transformer 每一层的注意力模块中（即每层的 Key 和 Value 矩阵前添加可训练向量），实现对整个模型前向传播路径的轻量级调控。相较于 P-tuning v1，其主要改进包括：（1）采用分层式 prefix tuning（而非仅输入层嵌入层插入提示），增强对深层语义表示的干预能力；（2）取消提示词与离散 token 的绑定，完全摒弃 LSTM 编码器，改用更简洁、可端到端训练的 MLP 或随机初始化向量；（3）支持多任务联合优化，提升泛化性与稳定性；（4）显著降低对任务特定模板的依赖，适配更广泛的下游任务。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "准确指出 P-tuning v2 的核心机制：在每一 Transformer 层的 Key/Value 前添加可学习 prefix 向量",
+          "score": 1.0
+        },
+        {
+          "point": "明确对比 P-tuning v1：v1 仅在输入嵌入层注入提示，且依赖 LSTM 编码器生成连续提示；v2 取消 LSTM，采用更轻量、端到端可训的向量初始化方式",
+          "score": 1.0
+        },
+        {
+          "point": "指出 v2 支持分层调控与多任务适配，提升了模型泛化性与任务鲁棒性",
+          "score": 1.0
+        },
+        {
+          "point": "说明 v2 减少了对人工设计 prompt 模板的依赖，更适配多样化下游任务",
+          "score": 1.0
+        }
+      ],
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_f7977c312ba2337f",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "Flash Attention 通过哪些关键技术实现显存节省与计算加速？",
+      "knowledge_points": [
+        "Flash Attention"
+      ],
+      "source_chunks": [
+        "chunk_c874951de1b53f3d"
+      ],
+      "difficulty": "medium",
+      "options": [
+        {
+          "key": "A",
+          "text": "稀疏 attention 与线性化 attention"
+        },
+        {
+          "key": "B",
+          "text": "分块 softmax、重计算与 kernel 融合"
+        },
+        {
+          "key": "C",
+          "text": "低阶 self-Attention 与原型压缩"
+        },
+        {
+          "key": "D",
+          "text": "引入先验分布与多头结构改进"
+        }
+      ],
+      "answer": "B",
+      "analysis": "根据资料[1]，Flash Attention 的核心是使用分块 softmax 等价替代传统 softmax，并结合重计算与 kernel 融合技术，从而减少对高带宽内存（HBM）的访问、高效利用片上缓存（SRAM），达到省显存且提速的效果。其他选项（A、C、D）均为资料[2]中列出的其他 Attention 优化方向，但不属于 Flash Attention 的关键技术。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_8d0b5e54c1788fa2",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "Paged Attention 是一种通过分页管理 KV Cache 来减少内存碎片、提升显存利用率的 Attention 优化技术，旨在缓解传统 Attention 在长上下文推理中因 KV Cache 过大导致的内存瓶颈问题。",
+      "knowledge_points": [
+        "Paged Attention"
+      ],
+      "source_chunks": [
+        "chunk_c5a3e959a97bbbd8"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": true,
+      "analysis": "Paged Attention 受操作系统虚拟内存分页机制启发，将 KV Cache 划分为固定大小的 page（页），并用 page table 管理逻辑位置与物理存储的映射，从而消除连续内存分配需求，显著降低内存碎片，提高显存利用率。该技术直接针对检索资料[2]指出的‘推理中反复加载巨大 KV Cache 导致内存开销大、性能受内存限制’问题，属于 Attention 优化中‘加速并减少内存占用’方向的具体实现（资料[1]），因此陈述正确。",
+      "rubric": null,
+      "blanks": null
+    }
+  ],
+  "updated_at": null
+}

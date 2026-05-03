@@ -16,10 +16,16 @@ def course_qa(
     payload: RagQaRequest,
     user: dict = Depends(require_user),
 ) -> RagQaResponse:
-    _ = user
     if payload.course_id != course_id:
         raise HTTPException(status_code=400, detail="course_id mismatch")
-    result = answer_question(course_id, payload.question, payload.top_k)
+    result = answer_question(
+        course_id,
+        payload.question,
+        payload.top_k,
+        payload.use_web_search,
+        user.get("id"),
+        payload.conversation_id,
+    )
     return RagQaResponse(**result)
 
 
@@ -29,10 +35,16 @@ def course_qa_stream(
     payload: RagQaRequest,
     user: dict = Depends(require_user),
 ) -> StreamingResponse:
-    _ = user
     if payload.course_id != course_id:
         raise HTTPException(status_code=400, detail="course_id mismatch")
-    event_stream = stream_answer_events(course_id, payload.question, payload.top_k)
+    event_stream = stream_answer_events(
+        course_id,
+        payload.question,
+        payload.top_k,
+        payload.use_web_search,
+        user.get("id"),
+        payload.conversation_id,
+    )
     return StreamingResponse(
         event_stream,
         media_type="text/event-stream",
@@ -46,7 +58,6 @@ def course_qa_evaluate(
     payload: RagEvaluationRequest,
     user: dict = Depends(require_user),
 ) -> RagEvaluationResponse:
-    _ = user
     if payload.course_id != course_id:
         raise HTTPException(status_code=400, detail="course_id mismatch")
     try:

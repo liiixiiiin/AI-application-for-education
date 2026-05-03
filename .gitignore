@@ -1,0 +1,54 @@
+# ── 环境与密钥（勿提交）────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+secrets/
+.claude/
+
+# ── 演示文稿（体积大、易变动）──────────────────────────────────────
+*.pptx
+*.ppt
+*.pptm
+*.potx
+
+# PPT/答辩导出预览（大图与 PDF，不上传仓库）
+preview/
+
+# ── Python ─────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+venv/
+.venv/
+backend/venv/
+.ppt_venv/
+
+# ── Node ───────────────────────────────────────────────────────────
+frontend/node_modules/
+node_modules/
+.npm
+.pnpm-store
+
+# ── 本地数据库（含用户与会话数据）────────────────────────────────
+backend/app.db
+*.db-journal
+
+# ── IDE / 系统 ─────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── 日志与缓存 ─────────────────────────────────────────────────────
+*.log
+.cache/

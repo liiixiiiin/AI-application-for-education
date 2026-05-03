@@ -6,8 +6,11 @@ import KnowledgeBaseUploadPage from "../pages/KnowledgeBaseUpload.vue";
 import KnowledgeBaseSearchPage from "../pages/KnowledgeBaseSearch.vue";
 import AdminDashboard from "../pages/AdminDashboard.vue";
 import RagQaPage from "../pages/RagQa.vue";
+import LessonOutlinePage from "../pages/LessonOutline.vue";
 import ExerciseGenerationPage from "../pages/ExerciseGeneration.vue";
 import ExerciseGradingPage from "../pages/ExerciseGrading.vue";
+import ExerciseSessionPage from "../pages/ExerciseSession.vue";
+import PersonalizedExercisePage from "../pages/PersonalizedExercise.vue";
 import { getSession } from "../stores/session";
 
 const router = createRouter({
@@ -21,8 +24,11 @@ const router = createRouter({
     { path: "/knowledge-base/search", component: KnowledgeBaseSearchPage },
     { path: "/admin", component: AdminDashboard },
     { path: "/qa", component: RagQaPage },
+    { path: "/lesson-outline", component: LessonOutlinePage },
     { path: "/exercises", component: ExerciseGenerationPage },
     { path: "/exercises/grade", component: ExerciseGradingPage },
+    { path: "/exercises/session", component: ExerciseSessionPage },
+    { path: "/personalized", component: PersonalizedExercisePage },
   ],
 });
 
@@ -42,7 +48,7 @@ router.beforeEach((to) => {
     return "/courses";
   }
   if (
-    to.path === "/exercises" &&
+    (to.path === "/exercises" || to.path === "/lesson-outline") &&
     session.user?.role !== "teacher" &&
     session.user?.role !== "admin"
   ) {

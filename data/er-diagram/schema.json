@@ -1,0 +1,158 @@
+{
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        "id",
+        "name",
+        "email",
+        "role",
+        "password_hash",
+        "password_salt",
+        "created_at"
+      ],
+      "foreign_keys": [],
+      "uniques": []
+    },
+    {
+      "name": "courses",
+      "columns": [
+        "id",
+        "title",
+        "description",
+        "creator_id",
+        "created_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "creator_id",
+          "ref": "users.id"
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "sessions",
+      "columns": [
+        "token",
+        "user_id",
+        "created_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "user_id",
+          "ref": "users.id"
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "knowledge_points",
+      "columns": [
+        "id",
+        "course_id",
+        "point",
+        "created_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "course_id",
+          "ref": "courses.id"
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "conversations",
+      "columns": [
+        "id",
+        "user_id",
+        "course_id",
+        "title",
+        "created_at",
+        "updated_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "user_id",
+          "ref": "users.id"
+        },
+        {
+          "col": "course_id",
+          "ref": "courses.id"
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "messages",
+      "columns": [
+        "id",
+        "conversation_id",
+        "role",
+        "content",
+        "citations",
+        "created_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "conversation_id",
+          "ref": "conversations.id"
+        }
+      ],
+      "uniques": []
+    },
+    {
+      "name": "knowledge_mastery",
+      "columns": [
+        "id",
+        "student_id",
+        "course_id",
+        "knowledge_point",
+        "mastery",
+        "attempt_count",
+        "updated_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "student_id",
+          "ref": "users.id"
+        },
+        {
+          "col": "course_id",
+          "ref": "courses.id"
+        }
+      ],
+      "uniques": [
+        [
+          "student_id",
+          "course_id",
+          "knowledge_point"
+        ]
+      ]
+    },
+    {
+      "name": "exercise_attempts",
+      "columns": [
+        "id",
+        "student_id",
+        "exercise_id",
+        "course_id",
+        "score",
+        "knowledge_points",
+        "created_at"
+      ],
+      "foreign_keys": [
+        {
+          "col": "student_id",
+          "ref": "users.id"
+        },
+        {
+          "col": "course_id",
+          "ref": "courses.id"
+        }
+      ],
+      "uniques": []
+    }
+  ]
+}

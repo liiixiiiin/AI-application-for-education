@@ -1,0 +1,162 @@
+{
+  "batch_id": "batch_7499d0516471987a",
+  "course_id": "course_9ff5901482019ab3",
+  "title": "练习批次 2026/4/28 18:12:07",
+  "created_at": "2026-04-02T04:20:40.122184+00:00",
+  "exercises": [
+    {
+      "exercise_id": "ex_8b1a613e8f059167",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "以下哪项是 GeLU（Gaussian Error Linear Unit）激活函数的标准数学定义？",
+      "knowledge_points": [
+        "GeLU"
+      ],
+      "source_chunks": [
+        "chunk_5c289f90d267452c"
+      ],
+      "difficulty": "medium",
+      "options": [
+        {
+          "key": "A",
+          "text": "GeLU(x) = max(0, x)"
+        },
+        {
+          "key": "B",
+          "text": "GeLU(x) = x * σ(x)，其中 σ(x) 是 sigmoid 函数"
+        },
+        {
+          "key": "C",
+          "text": "GeLU(x) = x * Φ(x)，其中 Φ(x) 是标准正态分布的累积分布函数"
+        },
+        {
+          "key": "D",
+          "text": "GeLU(x) = tanh(x)"
+        }
+      ],
+      "answer": "C",
+      "analysis": "GeLU 的标准定义为 GeLU(x) = x * Φ(x)，其中 Φ(x) 表示标准正态分布的累积分布函数（CDF），这体现了其基于高斯误差函数的统计特性。选项 A 是 ReLU，B 是 Swish 的变体（Swish = x * σ(x)），D 是双曲正切函数，均非 GeLU 定义。虽然实际实现中常采用近似公式（如含 tanh 的多项式近似），但题干明确询问‘标准数学定义’，故正确答案为 C。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_c0aadb44d5f2d855",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "true_false",
+      "question": "P-tuning是一种通过在输入中插入可学习的连续提示（prompt）向量来微调大语言模型的方法，而非修改模型参数本身。",
+      "knowledge_points": [
+        "P-tuning"
+      ],
+      "source_chunks": [
+        "chunk_2971cc5e3baea292"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": true,
+      "analysis": "P-tuning 是一种提示微调（Prompt Tuning）方法，其核心思想是将离散的文本提示（prompt）替换为可训练的连续向量（soft prompt），这些向量被拼接到输入嵌入中，并在下游任务训练过程中更新，而冻结预训练语言模型的主体参数。因此该描述正确。注意：P-tuning（v1/v2）区别于全参数微调和Adapter等方法，属于参数高效微调（PEFT）范畴。",
+      "rubric": null,
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_f909df085cd20502",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "fill_in_blank",
+      "question": "P-tuning v2 是一种针对大语言模型的参数高效微调方法，其核心思想是通过可学习的连续向量（即____）替代传统离散的Prompt模板，从而在不更新模型主干参数的前提下提升下游任务性能。",
+      "knowledge_points": [
+        "P-tuning v2"
+      ],
+      "source_chunks": [
+        "chunk_1200210b465d7d1b"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": null,
+      "analysis": "P-tuning v2 的关键技术特征是摒弃人工设计的离散文本Prompt，转而引入一组端到端可训练的连续向量——即 prompt embeddings，作为模型输入中的软提示（soft prompts）。该术语是P-tuning v2区别于P-tuning v1（使用LSTM生成prompt）及传统Prompt Engineering的核心标识，属于必须掌握的核心概念。",
+      "rubric": null,
+      "blanks": [
+        {
+          "index": 1,
+          "answer": "prompt embeddings",
+          "alternatives": [
+            "prompt embeddings",
+            "prompt embedding",
+            "提示嵌入",
+            "提示向量",
+            "可学习提示"
+          ]
+        }
+      ]
+    },
+    {
+      "exercise_id": "ex_54c78b6a08702393",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "short_answer",
+      "question": "请写出前馈神经网络（FFN）块的标准计算公式，并说明其中各符号的含义以及常用的激活函数类型。",
+      "knowledge_points": [
+        "前馈神经网络"
+      ],
+      "source_chunks": [
+        "chunk_96d688b38d1f51ef"
+      ],
+      "difficulty": "medium",
+      "options": null,
+      "answer": "FFN块的标准计算公式为：FFN(x) = W₂ × activation(W₁ × x + b₁) + b₂。其中，x 是输入向量（维度为 h），W₁ ∈ ℝ^(4h×h) 和 W₂ ∈ ℝ^(h×4h) 是可训练权重矩阵，b₁ ∈ ℝ^(4h) 和 b₂ ∈ ℝ^h 是偏置项，activation 为非线性激活函数，常用 ReLU 或 GeLU。",
+      "analysis": null,
+      "rubric": [
+        {
+          "point": "正确写出完整公式 FFN(x) = W₂ × activation(W₁ × x + b₁) + b₂",
+          "score": 1.0
+        },
+        {
+          "point": "准确说明 x、W₁、W₂、b₁、b₂ 的含义及维度关系（如中间维度扩展为 4h）",
+          "score": 1.0
+        },
+        {
+          "point": "指出至少一种常用激活函数（ReLU 或 GeLU）",
+          "score": 1.0
+        },
+        {
+          "point": "公式中各运算顺序和结构描述清晰（如先线性变换→激活→再线性变换→加偏置）",
+          "score": 1.0
+        }
+      ],
+      "blanks": null
+    },
+    {
+      "exercise_id": "ex_624b211a5e67d26f",
+      "course_id": "course_9ff5901482019ab3",
+      "type": "single_choice",
+      "question": "下列关于 Swish 激活函数的描述中，哪一项是正确的？",
+      "knowledge_points": [
+        "激活函数"
+      ],
+      "source_chunks": [
+        "chunk_76008c8ed03f39c8"
+      ],
+      "difficulty": "medium",
+      "options": [
+        {
+          "key": "A",
+          "text": "Swish(x) = max(0, x)，即等价于 ReLU 函数"
+        },
+        {
+          "key": "B",
+          "text": "Swish(x) = x × tanh(x)，其导数恒为正，具有强单调性"
+        },
+        {
+          "key": "C",
+          "text": "Swish(x) = x × σ(βx)，其中 σ 为 Sigmoid 函数，β 可设为 1 或作为可学习参数"
+        },
+        {
+          "key": "D",
+          "text": "Swish 在 LLaMA 中被直接用于残差连接，替代 LayerNorm 的作用"
+        }
+      ],
+      "answer": "C",
+      "analysis": "根据资料[1]，Swish 定义为 Swish(x) = x × σ(βx)，其中 σ 是 Sigmoid 函数，β 可设为 1 或作为可学习参数；选项 A 描述的是 ReLU，错误；选项 B 混淆了 Swish 与 GELU 或 TanhSoftsign 等函数，Swish 实际使用 Sigmoid 而非 tanh，且其导数不恒为正（存在局部非单调性），错误；选项 D 错误，Swish 在 LLaMA 中用于 SwiGLU 前馈网络中的门控分支（即 Swish(W2x)），而非残差连接或替代 LayerNorm。",
+      "rubric": null,
+      "blanks": null
+    }
+  ],
+  "updated_at": "2026-04-28T10:12:09.113375+00:00"
+}

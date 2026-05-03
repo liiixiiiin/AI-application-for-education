@@ -1,0 +1,74 @@
+%% Auto-generated from backend/app/db.py
+%% Render: https://mermaid.live  or VSCode mermaid preview
+erDiagram
+    users {
+        text id PK
+        text name
+        text email UK
+        text role
+        text password_hash
+        text password_salt
+        text created_at
+    }
+    courses {
+        text id PK
+        text title
+        text description
+        text creator_id
+        text created_at
+    }
+    sessions {
+        text token PK
+        text user_id
+        text created_at
+    }
+    knowledge_points {
+        text id PK
+        text course_id
+        text point
+        text created_at
+    }
+    conversations {
+        text id PK
+        text user_id
+        text course_id
+        text title
+        text created_at
+        text updated_at
+    }
+    messages {
+        text id PK
+        text conversation_id
+        text role
+        text content
+        text citations
+        text created_at
+    }
+    knowledge_mastery {
+        text id PK
+        text student_id
+        text course_id
+        text knowledge_point
+        real mastery
+        integer attempt_count
+        text updated_at
+    }
+    exercise_attempts {
+        text id PK
+        text student_id
+        text exercise_id
+        text course_id
+        real score
+        text knowledge_points
+        text created_at
+    }
+    users ||--o{ courses : "creator_id→id"
+    users ||--o{ sessions : "user_id→id"
+    courses ||--o{ knowledge_points : "course_id→id"
+    users ||--o{ conversations : "user_id→id"
+    courses ||--o{ conversations : "course_id→id"
+    conversations ||--o{ messages : "conversation_id→id"
+    users ||--o{ knowledge_mastery : "student_id→id"
+    courses ||--o{ knowledge_mastery : "course_id→id"
+    users ||--o{ exercise_attempts : "student_id→id"
+    courses ||--o{ exercise_attempts : "course_id→id"

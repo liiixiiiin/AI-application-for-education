@@ -116,6 +116,8 @@ class RagQaRequest(BaseModel):
     course_id: str = Field(min_length=1)
     question: str = Field(min_length=1)
     top_k: int = Field(default=5, ge=1, le=20)
+    use_web_search: bool | None = Field(default=False)
+    conversation_id: str | None = None
 
 
 class RagCitation(BaseModel):
@@ -133,6 +135,46 @@ class RagCitation(BaseModel):
 class RagQaResponse(BaseModel):
     answer: str
     citations: list[RagCitation]
+    conversation_id: str | None = None
+
+
+# ── Conversation / Memory ──
+
+
+class ConversationCreateRequest(BaseModel):
+    course_id: str = Field(min_length=1)
+
+
+class ConversationUpdateRequest(BaseModel):
+    title: str = Field(min_length=1)
+
+
+class MessageResponse(BaseModel):
+    id: str
+    conversation_id: str
+    role: str
+    content: str
+    citations: list[RagCitation]
+    created_at: str
+
+
+class ConversationResponse(BaseModel):
+    id: str
+    user_id: str
+    course_id: str
+    title: str
+    created_at: str
+    updated_at: str
+
+
+class ConversationDetailResponse(BaseModel):
+    id: str
+    user_id: str
+    course_id: str
+    title: str
+    created_at: str
+    updated_at: str
+    messages: list[MessageResponse]
 
 
 class RagEvaluationRequest(BaseModel):
@@ -148,7 +190,7 @@ class RagEvaluationResponse(BaseModel):
     answer: str
     contexts: list[str]
     citations: list[RagCitation]
-    scores: dict[str, float]
+    scores: dict[str, float | None]
     metrics: list[str]
 
 
@@ -170,6 +212,12 @@ class ExerciseRubricItem(BaseModel):
     score: float
 
 
+class ExerciseBlankItem(BaseModel):
+    index: int
+    answer: str
+    alternatives: list[str] = Field(default_factory=list)
+
+
 class ExerciseItem(BaseModel):
     exercise_id: str
     course_id: str
@@ -182,10 +230,46 @@ class ExerciseItem(BaseModel):
     answer: str | bool | None = None
     analysis: str | None = None
     rubric: list[ExerciseRubricItem] | None = None
+    blanks: list[ExerciseBlankItem] | None = None
 
 
 class ExerciseGenerationResponse(BaseModel):
     generated: list[ExerciseItem]
+
+
+class LessonOutlineGenerateRequest(BaseModel):
+    course_id: str = Field(min_length=1)
+    chapter_title: str = Field(min_length=1)
+    duration_minutes: int = Field(default=45, ge=10, le=240)
+    knowledge_scope: list[str] | None = None
+    audience_level: str = Field(default="基础")
+    include_practice: bool = True
+
+
+class LessonFlowItem(BaseModel):
+    stage: str
+    minutes: int
+    teacher_activity: str
+    student_activity: str
+    content_focus: str
+
+
+class LessonOutlineResponse(BaseModel):
+    outline_id: str | None = None
+    title: str
+    course_id: str
+    chapter_title: str
+    duration_minutes: int
+    objectives: list[str]
+    key_points: list[str]
+    difficult_points: list[str]
+    teaching_flow: list[LessonFlowItem]
+    practice_tasks: list[str]
+    assessment_suggestions: list[str]
+    source_chunks: list[str]
+    citations: list[RagCitation]
+    created_at: str | None = None
+    updated_at: str | None = None
 
 
 class ExerciseBatchSaveRequest(BaseModel):
@@ -218,7 +302,7 @@ class ExerciseGradingRequest(BaseModel):
     exercise_id: str = Field(min_length=1)
     course_id: str = Field(min_length=1)
     type: str = Field(min_length=1)
-    answer: str | bool
+    answer: str | bool | list
 
 
 class ExerciseGradingResponse(BaseModel):
@@ -229,3 +313,79 @@ class ExerciseGradingResponse(BaseModel):
     suggestion: str
     matched_points: list[str] | None = None
     missing_points: list[str] | None = None
+    knowledge_points: list[str] | None = None
+
+
+# ── Knowledge Tracking ──
+
+
+class KnowledgeMasteryItem(BaseModel):
+    knowledge_point: str
+    mastery: float
+    attempt_count: int
+    updated_at: str
+
+
+class KnowledgeStateResponse(BaseModel):
+    course_id: str
+    items: list[KnowledgeMasteryItem]
+    weak_points: list[str]
+
+
+class RecommendedExercisesRequest(BaseModel):
+    course_id: str = Field(min_length=1)
+    count: int = Field(default=5, ge=1, le=20)
+    difficulty: str = Field(default="easy")
+
+
+class ExerciseAttemptItem(BaseModel):
+    id: str
+    exercise_id: str
+    course_id: str
+    score: float
+    knowledge_points: list[str]
+    created_at: str
+
+
+# ── Agent (P0-1, agent-spec §9) ──
+
+
+class AgentRunRequest(BaseModel):
+    user_input: str = Field(min_length=1)
+    course_id: str | None = None
+    conversation_id: str | None = None
+    extra_inputs: dict | None = None
+    time_budget_seconds: float = Field(default=60.0, ge=5.0, le=180.0)
+
+
+class AgentStepInfo(BaseModel):
+    step_id: str | None = None
+    tool: str | None = None
+    args: dict | None = None
+    success: bool | None = None
+    summary: str | None = None
+    duration_ms: int | None = None
+    retries: int | None = None
+    error: str | None = None
+
+
+class AgentReflectInfo(BaseModel):
+    pass_: bool = Field(alias="pass_", default=False)
+    reason: str = ""
+    failed_dimensions: list[str] = Field(default_factory=list)
+    suggestion: str = ""
+
+    class Config:
+        populate_by_name = True
+
+
+class AgentRunResponse(BaseModel):
+    run_id: str
+    intent: str | None = None
+    skill: str | None = None
+    answer: dict
+    steps: list[AgentStepInfo] = Field(default_factory=list)
+    reflect_history: list[dict] = Field(default_factory=list)
+    degraded: bool = False
+    duration_ms: int = 0
+    error: str | None = None
